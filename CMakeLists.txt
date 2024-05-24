@@ -166,8 +166,11 @@ install(DIRECTORY source/
         DESTINATION include/common
         FILES_MATCHING
         PATTERN "*.h"
-        PATTERN "pch.h" EXCLUDE
-)
+        PATTERN "pch.h" EXCLUDE)
+
+install(FILES source/pch.h
+        DESTINATION include/common
+        RENAME common.h)
 
 include(CMakePackageConfigHelpers)
 configure_package_config_file(${PACKAGE_NAME}-config.cmake.in ${PACKAGE_NAME}-config.cmake INSTALL_DESTINATION share/${PACKAGE_NAME})

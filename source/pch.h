@@ -56,6 +56,8 @@
 #include <protos/immortals/state.pb.h>
 #include <protos/ssl-vision/messages_robocup_ssl_wrapper.pb.h>
 
+#include "services.h"
+
 #include "math/angle.h"
 #include "math/geom/circle.h"
 #include "math/geom/line.h"
@@ -63,6 +65,43 @@
 #include "math/geom/rect.h"
 #include "math/geom/triangle.h"
 #include "math/helpers.h"
+#include "math/linear.h"
+#include "math/median_filter.h"
+#include "math/random.h"
 #include "math/vec2.h"
 #include "math/vec3.h"
-#include "services.h"
+
+#include "config/base.h"
+#include "config/common.h"
+#include "config/config.h"
+#include "config/file.h"
+#include "config/network.h"
+#include "config/soccer.h"
+#include "config/vision.h"
+
+#include "debugging/color.h"
+#include "debugging/draw.h"
+#include "debugging/hub.h"
+#include "debugging/log.h"
+#include "debugging/source_location.h"
+#include "debugging/wrapper.h"
+
+#include "logging/debug_sink.h"
+#include "logging/logging.h"
+
+#include "network/address.h"
+#include "network/nng_client.h"
+#include "network/nng_message.h"
+#include "network/nng_server.h"
+#include "network/udp_client.h"
+#include "network/udp_server.h"
+
+#include "state/referee.h"
+#include "state/world.h"
+
+#include "storage/dumper.h"
+#include "storage/storage.h"
+
+#include "time/duration.h"
+#include "time/time_point.h"
+#include "time/timer.h"
