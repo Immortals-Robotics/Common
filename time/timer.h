@@ -3,7 +3,7 @@
 #include "duration.h"
 #include "time_point.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 class Timer
 {
@@ -79,4 +79,4 @@ private:
 
     double m_interval = 0.0f;
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

@@ -3,7 +3,7 @@
 #include "../time/time_point.h"
 #include "nng_message.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 class NngClient
 {
@@ -18,4 +18,4 @@ private:
     nng_socket m_socket;
     nng_dialer m_dialer;
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

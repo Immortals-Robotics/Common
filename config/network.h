@@ -3,7 +3,7 @@
 #include "../network/address.h"
 #include "base.h"
 
-namespace Tyr::Common::Config
+namespace Immortals::Common::Config
 {
 struct Network final : IConfig
 {
@@ -67,4 +67,4 @@ struct Network final : IConfig
 
     unsigned char nrf_frq; // TODO: unused
 };
-} // namespace Tyr::Common::Config
+} // namespace Immortals::Common::Config

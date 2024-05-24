@@ -1,6 +1,6 @@
 #include "line.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 std::optional<Vec2> Line::intersect(const Line &t_line) const
 {
@@ -109,4 +109,4 @@ std::vector<Vec2> Line::intersect(const Circle &t_circle) const
 
     return {{sol[0], da * sol[0] + db}, {sol[1], da * sol[1] + db}};
 }
-} // namespace Tyr::Common
+} // namespace Immortals::Common

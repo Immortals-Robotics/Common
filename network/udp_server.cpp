@@ -1,6 +1,6 @@
 #include "udp_server.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 UdpServer::UdpServer()
 {
@@ -39,4 +39,4 @@ bool UdpServer::send(const size_t t_size, const NetworkAddress &t_address)
 
     return true;
 }
-} // namespace Tyr::Common
+} // namespace Immortals::Common

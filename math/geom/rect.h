@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 struct Rect
 {
@@ -95,4 +95,4 @@ struct Rect
     Vec2 min;
     Vec2 max;
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

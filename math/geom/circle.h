@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 struct Circle
 {
@@ -52,4 +52,4 @@ struct Circle
     Vec2  center;
     float r;
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

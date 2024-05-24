@@ -2,12 +2,12 @@
 
 #include "../time/time_point.h"
 
-namespace Tyr::Referee
+namespace Immortals::Referee
 {
 class Referee;
 }
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 class RefereeState
 {
@@ -214,4 +214,4 @@ public:
         return stop();
     }
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

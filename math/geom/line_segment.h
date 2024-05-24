@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 struct LineSegment
 {
@@ -20,4 +20,4 @@ struct LineSegment
     Vec2 start;
     Vec2 end;
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

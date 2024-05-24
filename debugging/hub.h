@@ -10,7 +10,7 @@
 #include "../state/world.h"
 #include "../time/time_point.h"
 
-namespace Tyr::Common::Debug
+namespace Immortals::Common::Debug
 {
 class Hub
 {
@@ -137,7 +137,7 @@ private:
 
     ~Hub() = default;
 
-    friend struct ::Tyr::Common::Services;
+    friend struct ::Immortals::Common::Services;
 
     std::unique_ptr<NngServer> m_server;
 
@@ -146,4 +146,4 @@ private:
     std::mutex m_log_mutex;
     std::mutex m_draw_mutex;
 };
-} // namespace Tyr::Common::Debug
+} // namespace Immortals::Common::Debug

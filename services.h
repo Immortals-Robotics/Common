@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 namespace Debug
 {
@@ -25,8 +25,7 @@ struct Services
         std::filesystem::path t_db_path;
     };
 
-
-    static bool initialize(const Params& t_params);
+    static bool initialize(const Params &t_params);
     static void shutdown();
 
     static Config::Config &config()
@@ -87,6 +86,6 @@ inline static FieldState &field()
 {
     return Services::field();
 }
-} // namespace Tyr::Common
+} // namespace Immortals::Common
 
 #include "logging/macros.h"

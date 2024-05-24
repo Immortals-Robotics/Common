@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Tyr::Common::Config
+namespace Immortals::Common::Config
 {
 template <typename Enum>
 void fillEnum(const toml::node_view<const toml::node> t_node, Enum &t_enum)
@@ -16,4 +16,4 @@ protected:
 public:
     virtual void load(toml::node_view<const toml::node> t_node) = 0;
 };
-} // namespace Tyr::Common::Config
+} // namespace Immortals::Common::Config

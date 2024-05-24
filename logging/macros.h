@@ -10,7 +10,7 @@
 #define FORCEINLINE
 #endif
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 
 #define LOG_MACRO(fn, lvl)                                                                                             \
@@ -33,4 +33,4 @@ LOG_MACRO(logWarning, warn);
 LOG_MACRO(logError, err);
 LOG_MACRO(logCritical, critical);
 
-} // namespace Tyr::Common
+} // namespace Immortals::Common

@@ -2,7 +2,7 @@
 
 #include "../config/base.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 struct NetworkAddress final : Config::IConfig
 {
@@ -24,12 +24,12 @@ struct NetworkAddress final : Config::IConfig
     std::string    ip;
     unsigned short port = 0;
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common
 
 template <>
-struct fmt::formatter<Tyr::Common::NetworkAddress> : fmt::formatter<std::string>
+struct fmt::formatter<Immortals::Common::NetworkAddress> : fmt::formatter<std::string>
 {
-    auto format(Tyr::Common::NetworkAddress t_a, format_context &t_ctx) const
+    auto format(Immortals::Common::NetworkAddress t_a, format_context &t_ctx) const
     {
         return fmt::format_to(t_ctx.out(), "{}:{}", t_a.ip, t_a.port);
     }

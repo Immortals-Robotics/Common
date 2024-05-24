@@ -2,7 +2,7 @@
 
 #include "../services.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 static std::string getErrorString(const int t_error)
 {
@@ -475,4 +475,4 @@ bool Storage::storeRaw(Key t_key, std::span<char> t_data)
 
     return true;
 }
-} // namespace Tyr::Common
+} // namespace Immortals::Common

@@ -3,7 +3,7 @@
 #include "color.h"
 #include "source_location.h"
 
-namespace Tyr::Common::Debug
+namespace Immortals::Common::Debug
 {
 struct Draw
 {
@@ -73,4 +73,4 @@ struct Draw
             logWarning("Unsupported shape type: {}", shape.index());
     }
 };
-} // namespace Tyr::Common::Debug
+} // namespace Immortals::Common::Debug

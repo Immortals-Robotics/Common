@@ -1,5 +1,5 @@
 #include "file.h"
-namespace Tyr::Common::Config
+namespace Immortals::Common::Config
 {
 File::File(const std::filesystem::path &t_path)
 {
@@ -24,4 +24,4 @@ void File::save() const
     logInfo("Saved config file {}", m_file_path);
 }
 
-} // namespace Tyr::Common::Config
+} // namespace Immortals::Common::Config

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Tyr::Common::Debug
+namespace Immortals::Common::Debug
 {
 using StringMap = std::unordered_map<XXH32_hash_t, std::string>;
 
@@ -48,4 +48,4 @@ struct SourceLocation
             t_strings->emplace(function_hash, std::string{function.data(), function.size()});
     }
 };
-} // namespace Tyr::Common::Debug
+} // namespace Immortals::Common::Debug

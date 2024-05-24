@@ -1,6 +1,6 @@
 #include "nng_client.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 NngClient::NngClient(const std::string_view t_url)
 {
@@ -68,4 +68,4 @@ NngMessage NngClient::receiveRaw(const bool t_drain)
     return {buffer, size};
 }
 
-} // namespace Tyr::Common
+} // namespace Immortals::Common

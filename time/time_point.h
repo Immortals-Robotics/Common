@@ -2,7 +2,7 @@
 
 #include "duration.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 struct TimePoint
 {
@@ -107,4 +107,4 @@ inline auto format_as(const TimePoint t_point)
     return t_point.point;
 }
 
-} // namespace Tyr::Common
+} // namespace Immortals::Common

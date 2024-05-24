@@ -5,7 +5,7 @@
 
 #include "../time/time_point.h"
 
-namespace Tyr::Common::Debug
+namespace Immortals::Common::Debug
 {
 struct Wrapper
 {
@@ -48,4 +48,4 @@ struct Wrapper
             t_wrapper->mutable_strings()->emplace(entry.first, entry.second);
     }
 };
-} // namespace Tyr::Common::Debug
+} // namespace Immortals::Common::Debug

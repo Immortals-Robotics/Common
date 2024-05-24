@@ -2,7 +2,7 @@
 
 #include "base.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 enum class TeamColor
 {
@@ -20,9 +20,9 @@ enum class TeamSide
     Left  = 0,
     Right = 1,
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common
 
-namespace Tyr::Common::Config
+namespace Immortals::Common::Config
 {
 struct Common final : IConfig
 {
@@ -42,4 +42,4 @@ struct Common final : IConfig
     bool      side_wall    = false;
     bool      enable_debug = false;
 };
-} // namespace Tyr::Common::Config
+} // namespace Immortals::Common::Config

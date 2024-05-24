@@ -3,7 +3,7 @@
 #include "../config/config.h"
 #include "../time/time_point.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 enum class SeenState
 {
@@ -339,4 +339,4 @@ struct WorldState
         }
     }
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

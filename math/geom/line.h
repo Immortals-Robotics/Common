@@ -2,7 +2,7 @@
 
 #include "line_segment.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 struct Circle;
 
@@ -110,4 +110,4 @@ struct Line
     float b = 0.0f;
     float c = 0.0f;
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

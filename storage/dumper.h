@@ -4,7 +4,7 @@
 #include "../network/nng_client.h"
 #include "storage.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 class Dumper
 {
@@ -32,4 +32,4 @@ private:
 
     std::vector<Entry> m_entries;
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

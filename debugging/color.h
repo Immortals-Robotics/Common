@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 struct Color
 {
@@ -175,4 +175,4 @@ struct Color
         return {1.0f, 0.0f, 1.0f, 1.0f};
     }
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

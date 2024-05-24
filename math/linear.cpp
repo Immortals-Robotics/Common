@@ -1,6 +1,6 @@
 #include "linear.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 Linear Linear::calculate(const int t_n, const float *t_x, const float *t_y)
 {
@@ -52,4 +52,4 @@ Linear Linear::calculate(const int t_n, const float *t_x, const float *t_y)
 
     return result;
 }
-} // namespace Tyr::Common
+} // namespace Immortals::Common

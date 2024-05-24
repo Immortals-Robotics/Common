@@ -2,7 +2,7 @@
 
 #include "debug_sink.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 template <typename Sink>
 static void setPattern(Sink *const t_sink)
@@ -45,4 +45,4 @@ void Logger::addDebugSink()
 
     m_logger->sinks().push_back(debug_sink);
 }
-} // namespace Tyr::Common
+} // namespace Immortals::Common

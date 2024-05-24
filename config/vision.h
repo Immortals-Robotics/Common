@@ -2,7 +2,7 @@
 
 #include "base.h"
 
-namespace Tyr::Common::Config
+namespace Immortals::Common::Config
 {
 struct Vision final : IConfig
 {
@@ -50,4 +50,4 @@ struct Vision final : IConfig
     bool use_kalman_pos = true;
     bool use_kalman_ang = true; // TODO: check if this is in serious need in reality
 };
-} // namespace Tyr::Common::Config
+} // namespace Immortals::Common::Config

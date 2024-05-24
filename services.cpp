@@ -7,7 +7,7 @@
 #include "storage/storage.h"
 #include "time/timer.h"
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 bool Services::initialize(const Params &t_params)
 {
@@ -44,4 +44,4 @@ void Services::shutdown()
     delete s_logger;
     delete s_debug;
 }
-} // namespace Tyr::Common
+} // namespace Immortals::Common

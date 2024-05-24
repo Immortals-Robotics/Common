@@ -1,7 +1,7 @@
 
 #pragma once
 
-namespace Tyr::Common
+namespace Immortals::Common
 {
 class Storage
 {
@@ -37,4 +37,4 @@ private:
 
     MDB_dbi m_dbi = 0;
 };
-} // namespace Tyr::Common
+} // namespace Immortals::Common

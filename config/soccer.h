@@ -2,7 +2,7 @@
 
 #include "base.h"
 
-namespace Tyr::Common::Config
+namespace Immortals::Common::Config
 {
 struct RobotPhysicalStatus
 {
@@ -87,4 +87,4 @@ struct Soccer final : IConfig
 
     int init_gk_id = 0;
 };
-} // namespace Tyr::Common::Config
+} // namespace Immortals::Common::Config
