@@ -4,7 +4,7 @@ find_dependency(immortals-protos)
 
 find_dependency(asio)
 find_dependency(spdlog)
-find_dependency(unofficial)
+find_dependency(unofficial-lmdb)
 find_dependency(nng)
 find_dependency(xxHash)
 
@@ -12,5 +12,6 @@ find_dependency(raylib)
 find_dependency(imgui)
 
 find_dependency(PkgConfig)
+pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus)
 
 include("${CMAKE_CURRENT_LIST_DIR}/immortals-common-targets.cmake")
