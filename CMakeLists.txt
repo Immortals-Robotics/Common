@@ -68,72 +68,72 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus)
 
 set(HEADER_FILES
-        pch.h
-        services.h
+        source/pch.h
+        source/services.h
 
-        config/base.h
-        config/common.h
-        config/file.h
-        config/network.h
-        config/config.h
-        config/soccer.h
-        config/vision.h
+        source/config/base.h
+        source/config/common.h
+        source/config/file.h
+        source/config/network.h
+        source/config/config.h
+        source/config/soccer.h
+        source/config/vision.h
 
-        debugging/color.h
-        debugging/draw.h
-        debugging/hub.h
-        debugging/log.h
-        debugging/source_location.h
-        debugging/wrapper.h
+        source/debugging/color.h
+        source/debugging/draw.h
+        source/debugging/hub.h
+        source/debugging/log.h
+        source/debugging/source_location.h
+        source/debugging/wrapper.h
 
-        logging/debug_sink.h
-        logging/logging.h
-        logging/macros.h
+        source/logging/debug_sink.h
+        source/logging/logging.h
+        source/logging/macros.h
 
-        math/angle.h
-        math/helpers.h
-        math/linear.h
-        math/median_filter.h
-        math/random.h
-        math/vec2.h
-        math/vec3.h
-        math/geom/circle.h
-        math/geom/line_segment.h
-        math/geom/line.h
-        math/geom/rect.h
-        math/geom/triangle.h
+        source/math/angle.h
+        source/math/helpers.h
+        source/math/linear.h
+        source/math/median_filter.h
+        source/math/random.h
+        source/math/vec2.h
+        source/math/vec3.h
+        source/math/geom/circle.h
+        source/math/geom/line_segment.h
+        source/math/geom/line.h
+        source/math/geom/rect.h
+        source/math/geom/triangle.h
 
-        network/address.h
-        network/nng_client.h
-        network/nng_server.h
-        network/udp_client.h
-        network/nng_message.h
-        network/udp_server.h
+        source/network/address.h
+        source/network/nng_client.h
+        source/network/nng_server.h
+        source/network/udp_client.h
+        source/network/nng_message.h
+        source/network/udp_server.h
 
-        state/referee.h
-        state/world.h
-        storage/dumper.h
-        storage/storage.h
+        source/state/referee.h
+        source/state/world.h
+        source/storage/dumper.h
+        source/storage/storage.h
 
-        time/duration.h
-        time/time_point.h
-        time/timer.h)
+        source/time/duration.h
+        source/time/time_point.h
+        source/time/timer.h)
 
 set(SOURCE_FILES
-        services.cpp
+        source/services.cpp
 
-        config/file.cpp
+        source/config/file.cpp
 
-        logging/logging.cpp
-        math/linear.cpp
-        math/geom/circle.cpp
-        math/geom/line.cpp
-        network/nng_client.cpp
-        network/nng_server.cpp
-        network/udp_client.cpp
-        network/udp_server.cpp
-        storage/dumper.cpp
-        storage/storage.cpp)
+        source/logging/logging.cpp
+        source/math/linear.cpp
+        source/math/geom/circle.cpp
+        source/math/geom/line.cpp
+        source/network/nng_client.cpp
+        source/network/nng_server.cpp
+        source/network/udp_client.cpp
+        source/network/udp_server.cpp
+        source/storage/dumper.cpp
+        source/storage/storage.cpp)
 
 add_library(${PROJECT_NAME}
         ${SOURCE_FILES} ${HEADER_FILES})
@@ -156,16 +156,17 @@ endif ()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${USE_UNITY_BUILDS})
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE pch.h)
+target_precompile_headers(${PROJECT_NAME} PRIVATE source/pch.h)
 
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}_target
         LIBRARY DESTINATION lib)
 
-install(DIRECTORY ${PROTO_GEN_BASE_DIR}/
-        DESTINATION include/immortals/common
+install(DIRECTORY source/
+        DESTINATION include/common
         FILES_MATCHING
         PATTERN "*.h"
+        PATTERN "pch.h" EXCLUDE
 )
 
 include(CMakePackageConfigHelpers)
