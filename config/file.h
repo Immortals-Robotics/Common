@@ -5,7 +5,7 @@ namespace Tyr::Common::Config
 class File
 {
 public:
-    explicit File(const std::filesystem::path &t_file_name);
+    explicit File(const std::filesystem::path &t_path);
 
     void load();
     void save() const;

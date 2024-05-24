@@ -19,7 +19,14 @@ struct FieldState;
 
 struct Services
 {
-    static bool initialize();
+    struct Params
+    {
+        std::filesystem::path t_config_path;
+        std::filesystem::path t_db_path;
+    };
+
+
+    static bool initialize(const Params& t_params);
     static void shutdown();
 
     static Config::Config &config()

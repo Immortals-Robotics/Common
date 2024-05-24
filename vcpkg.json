@@ -1,0 +1,22 @@
+{
+  "name": "immortals-common",
+  "version": "0.1.0",
+  "dependencies": [
+    "vcpkg-pkgconfig-get-modules",
+    "immortals-protos",
+    "asio",
+    "protobuf",
+    "tomlplusplus",
+    "spdlog",
+    {
+      "name": "imgui",
+      "features": [
+        "docking-experimental"
+      ]
+    },
+    "raylib",
+    "lmdb",
+    "nng",
+    "xxhash"
+  ]
+}

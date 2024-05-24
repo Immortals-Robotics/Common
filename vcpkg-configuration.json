@@ -1,0 +1,22 @@
+{
+  "default-registry": {
+    "kind": "git",
+    "baseline": "5eba049322a6d394e6969d25adc8bea8eb1aa4f8",
+    "repository": "https://github.com/microsoft/vcpkg"
+  },
+  "registries": [
+    {
+      "kind": "git",
+      "repository": "https://github.com/Immortals-Robotics/vcpkg-registry",
+      "baseline": "5ac452df6955fb0089531c67cb38afb5d061bc13",
+      "packages": [
+        "homog2d",
+        "imgui",
+        "immortals-protos",
+        "immortals-common",
+        "rlimgui",
+        "vartypes"
+      ]
+    }
+  ]
+}

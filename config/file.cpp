@@ -1,10 +1,9 @@
 #include "file.h"
 namespace Tyr::Common::Config
 {
-File::File(const std::filesystem::path &t_file_name)
+File::File(const std::filesystem::path &t_path)
 {
-    const std::filesystem::path data_dir(DATA_DIR);
-    m_file_path = data_dir / t_file_name;
+    m_file_path = t_path;
 }
 
 void File::load()

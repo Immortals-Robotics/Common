@@ -42,13 +42,19 @@
 #define NOGDI  // All GDI defines and routines
 #define NOUSER // All USER defines and routines
 #endif
+
 #include <asio.hpp>
+
 #if defined(_WIN32) // raylib uses these names as function parameters
 #undef near
 #undef far
 #endif
 
 #include <google/protobuf/message_lite.h>
+
+#include <protos/immortals/debug.pb.h>
+#include <protos/immortals/state.pb.h>
+#include <protos/ssl-vision/messages_robocup_ssl_wrapper.pb.h>
 
 #include "math/angle.h"
 #include "math/geom/circle.h"

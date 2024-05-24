@@ -9,16 +9,16 @@
 
 namespace Tyr::Common
 {
-bool Services::initialize()
+bool Services::initialize(const Params &t_params)
 {
     s_logger = new Logger();
 
-    s_config = new Config::Config("config.toml");
+    s_config = new Config::Config(t_params.t_config_path);
     s_config->load();
 
     s_debug = new Debug::Hub();
 
-    if (!Storage::init(std::filesystem::path(LOG_DIR) / "db"))
+    if (!Storage::init(t_params.t_db_path))
     {
         return false;
     }

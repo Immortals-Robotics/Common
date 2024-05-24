@@ -12,7 +12,7 @@ namespace Tyr::Common::Config
 class Config
 {
 private:
-    Config(const std::filesystem::path &t_file_name) : m_file(t_file_name)
+    Config(const std::filesystem::path &t_path) : m_file(t_path)
     {}
 
     ~Config() = default;
