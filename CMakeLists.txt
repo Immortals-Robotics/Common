@@ -25,7 +25,6 @@ set(CMAKE_DEBUG_POSTFIX d)
 set(libs)
 
 if (${FEATURE_UDP})
-    add_compile_definitions(FEATURE_UDP=1)
     find_package(asio CONFIG REQUIRED)
     list(APPEND libs asio::asio)
     if (WIN32)
@@ -33,32 +32,26 @@ if (${FEATURE_UDP})
     endif ()
 endif ()
 if (${FEATURE_NNG})
-    add_compile_definitions(FEATURE_NNG=1)
     find_package(nng CONFIG REQUIRED)
     list(APPEND libs nng::nng)
 endif ()
 if (${FEATURE_STORAGE})
-    add_compile_definitions(FEATURE_STORAGE=1)
     find_package(unofficial-lmdb CONFIG REQUIRED)
     list(APPEND libs unofficial::lmdb::lmdb)
 endif ()
 if (${FEATURE_RAYLIB})
-    add_compile_definitions(FEATURE_RAYLIB=1)
     find_package(raylib CONFIG REQUIRED)
     list(APPEND libs raylib)
 endif ()
 if (${FEATURE_IMGUI})
-    add_compile_definitions(FEATURE_IMGUI=1)
     find_package(imgui CONFIG REQUIRED)
     list(APPEND libs imgui::imgui)
 endif ()
 if (${FEATURE_LOGGING})
-    add_compile_definitions(FEATURE_LOGGING=1)
     find_package(spdlog CONFIG REQUIRED)
     list(APPEND libs spdlog::spdlog)
 endif ()
 if (${FEATURE_CONFIG_FILE})
-    add_compile_definitions(FEATURE_CONFIG_FILE=1)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus)
     list(APPEND libs PkgConfig::tomlplusplus)
@@ -68,7 +61,6 @@ if (${FEATURE_DEBUG})
         message(WARNING "Debug feature depends on NNG, disabling.")
         set(FEATURE_DEBUG OFF)
     else ()
-        add_compile_definitions(FEATURE_DEBUG=1)
         find_package(xxHash CONFIG REQUIRED)
         list(APPEND libs xxHash::xxhash)
     endif ()
@@ -117,6 +109,8 @@ if (MSVC)
     add_compile_options(/MP)
 endif ()
 
+add_library(${PROJECT_NAME} "")
+add_library(immortals::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 set(HEADER_FILES
         source/pch.h
@@ -161,6 +155,7 @@ set(SOURCE_FILES
         source/math/geom/line.cpp)
 
 if (${FEATURE_UDP})
+    target_compile_definitions(${PROJECT_NAME} PUBLIC FEATURE_UDP=1)
     list(APPEND HEADER_FILES
             source/network/udp_client.h
             source/network/udp_server.h)
@@ -169,6 +164,7 @@ if (${FEATURE_UDP})
             source/network/udp_server.cpp)
 endif ()
 if (${FEATURE_NNG})
+    target_compile_definitions(${PROJECT_NAME} PUBLIC FEATURE_NNG=1)
     list(APPEND HEADER_FILES
             source/network/nng_client.h
             source/network/nng_server.h
@@ -178,6 +174,7 @@ if (${FEATURE_NNG})
             source/network/nng_server.cpp)
 endif ()
 if (${FEATURE_STORAGE})
+    target_compile_definitions(${PROJECT_NAME} PUBLIC FEATURE_STORAGE=1)
     list(APPEND HEADER_FILES
             source/storage/storage.h)
     list(APPEND SOURCE_FILES
@@ -190,7 +187,14 @@ if (${FEATURE_STORAGE})
                 source/storage/dumper.cpp)
     endif ()
 endif ()
+if (${FEATURE_RAYLIB})
+    target_compile_definitions(${PROJECT_NAME} PUBLIC FEATURE_RAYLIB=1)
+endif ()
+if (${FEATURE_IMGUI})
+    target_compile_definitions(${PROJECT_NAME} PUBLIC FEATURE_IMGUI=1)
+endif ()
 if (${FEATURE_LOGGING})
+    target_compile_definitions(${PROJECT_NAME} PUBLIC FEATURE_LOGGING=1)
     list(APPEND HEADER_FILES
             source/logging/logging.h)
     list(APPEND SOURCE_FILES
@@ -202,12 +206,14 @@ if (${FEATURE_LOGGING})
     endif ()
 endif ()
 if (${FEATURE_CONFIG_FILE})
+    target_compile_definitions(${PROJECT_NAME} PUBLIC FEATURE_CONFIG_FILE=1)
     list(APPEND HEADER_FILES
             source/config/file.h)
     list(APPEND SOURCE_FILES
             source/config/file.cpp)
 endif ()
 if (${FEATURE_DEBUG})
+    target_compile_definitions(${PROJECT_NAME} PUBLIC FEATURE_DEBUG=1)
     list(APPEND HEADER_FILES
             source/debugging/color.h
             source/debugging/draw.h
@@ -215,13 +221,9 @@ if (${FEATURE_DEBUG})
             source/debugging/log.h
             source/debugging/source_location.h
             source/debugging/wrapper.h)
-    list(APPEND SOURCE_FILES
-    )
 endif ()
 
-add_library(${PROJECT_NAME}
-        ${SOURCE_FILES} ${HEADER_FILES})
-add_library(immortals::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+target_sources(${PROJECT_NAME} PRIVATE ${HEADER_FILES} ${SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC ${libs})
 
