@@ -112,6 +112,4 @@ inline static FieldState &field()
 }
 } // namespace Immortals::Common
 
-#if FEATURE_LOGGING
 #include "logging/macros.h"
-#endif

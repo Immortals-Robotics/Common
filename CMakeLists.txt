@@ -119,6 +119,8 @@ set(HEADER_FILES
         source/pch.h
         source/services.h
 
+        source/logging/macros.h
+
         source/math/angle.h
         source/math/helpers.h
         source/math/linear.h
@@ -187,8 +189,7 @@ if (${FEATURE_STORAGE})
 endif ()
 if (${FEATURE_LOGGING})
     list(APPEND HEADER_FILES
-            source/logging/logging.h
-            source/logging/macros.h)
+            source/logging/logging.h)
     list(APPEND SOURCE_FILES
             source/logging/logging.cpp)
 
