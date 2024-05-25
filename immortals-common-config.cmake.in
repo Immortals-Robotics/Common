@@ -2,16 +2,37 @@ include(CMakeFindDependencyMacro)
 
 find_dependency(immortals-protos)
 
-find_dependency(asio)
-find_dependency(spdlog)
-find_dependency(unofficial-lmdb)
-find_dependency(nng)
-find_dependency(xxHash)
+if (@FEATURE_UDP@)
+    find_dependency(asio)
+endif()
 
-find_dependency(raylib)
-find_dependency(imgui)
+if (@FEATURE_LOGGING@)
+    find_dependency(spdlog)
+endif()
 
-find_dependency(PkgConfig)
-pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus)
+if (@FEATURE_STORAGE@)
+    find_dependency(unofficial-lmdb)
+endif()
+
+if (@FEATURE_NNG@)
+    find_dependency(nng)
+endif()
+
+if (@FEATURE_DEBUG@)
+    find_dependency(xxHash)
+endif()
+
+if (@FEATURE_RAYLIB@)
+    find_dependency(raylib)
+endif()
+
+if (@FEATURE_IMGUI@)
+    find_dependency(imgui)
+endif()
+
+if (@FEATURE_CONFIG_FILE@)
+    find_dependency(PkgConfig)
+    pkg_check_modules(tomlplusplus REQUIRED IMPORTED_TARGET tomlplusplus)
+endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/immortals-common-targets.cmake")
