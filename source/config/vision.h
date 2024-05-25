@@ -6,6 +6,7 @@ namespace Immortals::Common::Config
 {
 struct Vision final : IConfig
 {
+#if FEATURE_CONFIG_FILE
     void load(const toml::node_view<const toml::node> t_node) override
     {
         if (auto *use_camera_array = t_node["use_camera"].as_array())
@@ -30,6 +31,7 @@ struct Vision final : IConfig
         use_kalman_pos = t_node["use_kalman_pos"].value_or(use_kalman_pos);
         use_kalman_ang = t_node["use_kalman_ang"].value_or(use_kalman_ang);
     }
+#endif
 
     static constexpr unsigned kCamCount = 8;
     static constexpr unsigned kMaxBalls = 10;

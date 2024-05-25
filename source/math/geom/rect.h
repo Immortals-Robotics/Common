@@ -17,6 +17,7 @@ struct Rect
     explicit Rect(const Protos::Immortals::Rect &t_rect) : Rect(Vec2{t_rect.min()}, Vec2{t_rect.max()})
     {}
 
+#if FEATURE_RAYLIB
     explicit Rect(const ::Rectangle &t_rect) : Rect(Vec2{t_rect.x, t_rect.y}, t_rect.width, t_rect.height)
     {}
 
@@ -24,6 +25,7 @@ struct Rect
     {
         return {.x = min.x, .y = min.y, .width = width(), .height = height()};
     }
+#endif
 
     void fillProto(Protos::Immortals::Rect *const t_rect) const
     {

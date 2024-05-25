@@ -1,4 +1,5 @@
 #include "file.h"
+
 namespace Immortals::Common::Config
 {
 File::File(const std::filesystem::path &t_path)

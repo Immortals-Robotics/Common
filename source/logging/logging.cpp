@@ -1,7 +1,5 @@
 #include "logging.h"
 
-#include "debug_sink.h"
-
 namespace Immortals::Common
 {
 template <typename Sink>

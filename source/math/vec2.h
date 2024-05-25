@@ -25,21 +25,25 @@ struct Vec2
     explicit Vec2(const Protos::Ssl::Vector2 &t_v) : Vec2(t_v.x(), t_v.y())
     {}
 
+#if FEATURE_RAYLIB
     explicit Vec2(const ::Vector2 &t_v) : Vec2(t_v.x, t_v.y)
-    {}
-
-    explicit Vec2(const ::ImVec2 &t_v) : Vec2(t_v.x, t_v.y)
     {}
 
     explicit operator ::Vector2() const
     {
         return {.x = x, .y = y};
     }
+#endif
+
+#if FEATURE_IMGUI
+    explicit Vec2(const ::ImVec2 &t_v) : Vec2(t_v.x, t_v.y)
+    {}
 
     explicit operator ::ImVec2() const
     {
         return {x, y};
     }
+#endif
 
     void fillProto(Protos::Immortals::Vec2 *const t_v) const
     {
@@ -228,6 +232,7 @@ struct Vec2
 };
 } // namespace Immortals::Common
 
+#if FEATURE_LOGGING
 template <>
 struct fmt::formatter<Immortals::Common::Vec2> : fmt::formatter<std::string>
 {
@@ -236,3 +241,4 @@ struct fmt::formatter<Immortals::Common::Vec2> : fmt::formatter<std::string>
         return fmt::format_to(t_ctx.out(), "[{}, {}]", t_v.x, t_v.y);
     }
 };
+#endif
