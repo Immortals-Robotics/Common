@@ -14,6 +14,7 @@ struct RobotPhysicalStatus
 
 struct Soccer final : IConfig
 {
+#if FEATURE_CONFIG_FILE
     void load(const toml::node_view<const toml::node> t_node) override
     {
         fillEnum(t_node["our_side"], our_side);
@@ -66,6 +67,7 @@ struct Soccer final : IConfig
             }
         }
     }
+#endif
 
     TeamSide our_side = TeamSide::Left;
 

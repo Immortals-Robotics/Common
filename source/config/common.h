@@ -26,6 +26,7 @@ namespace Immortals::Common::Config
 {
 struct Common final : IConfig
 {
+#if FEATURE_CONFIG_FILE
     void load(const toml::node_view<const toml::node> t_node) override
     {
         immortals_is_the_best_team = t_node["immortals_is_the_best_team"].value_or(immortals_is_the_best_team);
@@ -33,6 +34,7 @@ struct Common final : IConfig
         side_wall    = t_node["side_wall"].value_or(side_wall);
         enable_debug = t_node["enable_debug"].value_or(enable_debug);
     }
+#endif
 
     // The variety of standard patterns that we can have is 16
     static constexpr unsigned kMaxRobots = 16;

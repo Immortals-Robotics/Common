@@ -7,6 +7,7 @@ namespace Immortals::Common::Config
 {
 struct Network final : IConfig
 {
+#if FEATURE_CONFIG_FILE
     void load(const toml::node_view<const toml::node> t_node) override
     {
         tracker_address.load(t_node["tracker"]);
@@ -30,6 +31,7 @@ struct Network final : IConfig
 
         nrf_frq = t_node["nrf_frq"].value_or(nrf_frq);
     }
+#endif
 
     static constexpr size_t kMaxUdpPacketSize = 1024 * 16; // TODO what should the size be really?
 
