@@ -27,9 +27,6 @@ set(libs)
 if (${FEATURE_UDP})
     find_package(asio CONFIG REQUIRED)
     list(APPEND libs asio::asio)
-    if (WIN32)
-        add_compile_definitions(_WIN32_WINNT=_WIN32_WINNT_WIN10)
-    endif ()
 endif ()
 if (${FEATURE_NNG})
     find_package(nng CONFIG REQUIRED)
@@ -156,6 +153,9 @@ set(SOURCE_FILES
 
 if (${FEATURE_UDP})
     target_compile_definitions(${PROJECT_NAME} PUBLIC FEATURE_UDP=1)
+    if (WIN32)
+        target_compile_definitions(${PROJECT_NAME} PUBLIC _WIN32_WINNT=_WIN32_WINNT_WIN10)
+    endif ()
     list(APPEND HEADER_FILES
             source/network/udp_client.h
             source/network/udp_server.h)
