@@ -1,6 +1,6 @@
 {
   "name": "immortals-common",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "dependencies": [
     "vcpkg-pkgconfig-get-modules",
     "immortals-protos",
