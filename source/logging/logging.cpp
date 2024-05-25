@@ -34,6 +34,7 @@ Logger::~Logger()
     flush();
 }
 
+#if FEATURE_DEBUG
 void Logger::addDebugSink()
 {
     auto debug_sink = std::make_shared<DebugSinkMt>();
@@ -43,4 +44,5 @@ void Logger::addDebugSink()
 
     m_logger->sinks().push_back(debug_sink);
 }
+#endif
 } // namespace Immortals::Common

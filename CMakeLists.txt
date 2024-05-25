@@ -28,6 +28,9 @@ if (${FEATURE_UDP})
     add_compile_definitions(FEATURE_UDP=1)
     find_package(asio CONFIG REQUIRED)
     list(APPEND libs asio::asio)
+    if (WIN32)
+        add_compile_definitions(_WIN32_WINNT=_WIN32_WINNT_WIN10)
+    endif ()
 endif ()
 if (${FEATURE_NNG})
     add_compile_definitions(FEATURE_NNG=1)
@@ -221,11 +224,6 @@ add_library(${PROJECT_NAME}
 add_library(immortals::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC ${libs})
-
-# TODO: find out which dependency needs this
-if (WIN32)
-    #target_compile_definitions(${PROJECT_NAME} PUBLIC _WIN32_WINNT=_WIN32_WINNT_WIN10)
-endif ()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES UNITY_BUILD ${USE_UNITY_BUILDS})
 

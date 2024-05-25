@@ -110,7 +110,11 @@
 #include "debugging/color.h"
 #include "debugging/draw.h"
 #include "debugging/hub.h"
+
+#if FEATURE_LOGGING
 #include "debugging/log.h"
+#endif
+
 #include "debugging/source_location.h"
 #include "debugging/wrapper.h"
 #endif
@@ -139,7 +143,9 @@
 #include "state/world.h"
 
 #if FEATURE_STORAGE
+#if FEATURE_NNG
 #include "storage/dumper.h"
+#endif
 #include "storage/storage.h"
 #endif
 

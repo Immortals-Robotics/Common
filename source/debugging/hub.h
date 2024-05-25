@@ -2,7 +2,6 @@
 
 #include "color.h"
 #include "draw.h"
-#include "log.h"
 #include "source_location.h"
 #include "wrapper.h"
 
@@ -21,7 +20,9 @@ public:
 
     void flush()
     {
+#if FEATURE_LOGGING
         logger().flush();
+#endif
 
         m_log_mutex.lock();
         m_draw_mutex.lock();
@@ -32,7 +33,10 @@ public:
         m_wrapper.fillProto(&pb_wrapper);
 
         m_wrapper.draws.clear();
+
+#if FEATURE_LOGGING
         m_wrapper.logs.clear();
+#endif
 
         m_log_mutex.unlock();
         m_draw_mutex.unlock();
@@ -115,12 +119,14 @@ public:
         this->draw(std::move(draw));
     }
 
+#if FEATURE_LOGGING
     void log(Log &&t_log)
     {
         m_log_mutex.lock();
         m_wrapper.logs.emplace_back(t_log);
         m_log_mutex.unlock();
     }
+#endif
 
     void draw(Draw &&t_draw)
     {
