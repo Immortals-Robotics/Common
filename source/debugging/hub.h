@@ -26,6 +26,7 @@ public:
 
         m_log_mutex.lock();
         m_draw_mutex.lock();
+        m_execution_time_mutex.lock();
 
         m_wrapper.time = TimePoint::now();
 
@@ -38,8 +39,11 @@ public:
         m_wrapper.logs.clear();
 #endif
 
+        m_wrapper.execution_times.clear();
+
         m_log_mutex.unlock();
         m_draw_mutex.unlock();
+        m_execution_time_mutex.unlock();
 
         m_server->send(m_wrapper.time, pb_wrapper);
     }
@@ -137,7 +141,9 @@ public:
 
     void reportExecutionTime(const std::string_view t_name, const ExecutionTime &t_execution_time)
     {
+        m_execution_time_mutex.lock();
         m_wrapper.execution_times.emplace(t_name, t_execution_time);
+        m_execution_time_mutex.unlock();
     }
 
 private:
@@ -156,5 +162,6 @@ private:
 
     std::mutex m_log_mutex;
     std::mutex m_draw_mutex;
+    std::mutex m_execution_time_mutex;
 };
 } // namespace Immortals::Common::Debug
