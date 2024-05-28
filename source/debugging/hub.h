@@ -135,6 +135,11 @@ public:
         m_draw_mutex.unlock();
     }
 
+    void reportExecutionTime(const std::string_view t_name, const ExecutionTime &t_execution_time)
+    {
+        m_wrapper.execution_times.emplace(t_name, t_execution_time);
+    }
+
 private:
     Hub()
     {

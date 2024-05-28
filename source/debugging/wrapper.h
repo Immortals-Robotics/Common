@@ -21,6 +21,8 @@ struct Wrapper
 
     StringMap strings;
 
+    std::unordered_map<std::string, ExecutionTime> execution_times;
+
     Wrapper() = default;
 
     explicit Wrapper(const Protos::Immortals::Debug::Wrapper &t_wrapper)
@@ -44,6 +46,9 @@ struct Wrapper
         for (const auto &log : t_wrapper.log())
             logs.emplace_back(log, strings);
 #endif
+
+        for (const auto &execution_time : t_wrapper.execution_times())
+            execution_times.emplace(execution_time.first, execution_time.second);
     }
 
     void fillProto(Protos::Immortals::Debug::Wrapper *t_wrapper)
@@ -60,6 +65,9 @@ struct Wrapper
 
         for (const auto &entry : strings)
             t_wrapper->mutable_strings()->emplace(entry.first, entry.second);
+
+        for (const auto &execution_time : execution_times)
+            execution_time.second.fillProto(&(*t_wrapper->mutable_execution_times())[execution_time.first]);
     }
 };
 } // namespace Immortals::Common::Debug

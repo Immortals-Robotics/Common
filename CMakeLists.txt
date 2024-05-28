@@ -217,6 +217,7 @@ if (${FEATURE_DEBUG})
     list(APPEND HEADER_FILES
             source/debugging/color.h
             source/debugging/draw.h
+            source/debugging/execution_time.h
             source/debugging/hub.h
             source/debugging/log.h
             source/debugging/source_location.h

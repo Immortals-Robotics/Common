@@ -31,7 +31,7 @@ struct RawRobotState
         angle    = Angle::fromRad(t_robot.orientation());
     }
 
-    RawRobotState(const Protos::Immortals::RawRobotState &t_robot)
+    explicit RawRobotState(const Protos::Immortals::RawRobotState &t_robot)
     {
         vision_id = t_robot.id();
         color     = static_cast<TeamColor>(t_robot.color());
@@ -56,12 +56,12 @@ struct RawBallState
 
     RawBallState() = default;
 
-    RawBallState(const Protos::Ssl::Vision::DetectionBall &t_ball)
+    explicit RawBallState(const Protos::Ssl::Vision::DetectionBall &t_ball)
     {
         position = Vec2(t_ball.x(), t_ball.y());
     }
 
-    RawBallState(const Protos::Immortals::RawBallState &t_ball)
+    explicit RawBallState(const Protos::Immortals::RawBallState &t_ball)
     {
         position = Vec2{t_ball.position()};
     }
@@ -83,7 +83,7 @@ struct RawWorldState
 
     RawWorldState() = default;
 
-    RawWorldState(const Protos::Ssl::Vision::DetectionFrame &t_frame)
+    explicit RawWorldState(const Protos::Ssl::Vision::DetectionFrame &t_frame)
     {
         time = Common::TimePoint::fromSeconds(t_frame.t_capture());
 
@@ -103,7 +103,7 @@ struct RawWorldState
         }
     }
 
-    RawWorldState(const Protos::Immortals::RawWorldState &t_state)
+    explicit RawWorldState(const Protos::Immortals::RawWorldState &t_state)
     {
         time = Common::TimePoint::fromMicroseconds(t_state.time());
 
@@ -160,7 +160,7 @@ struct RobotState
 
     RobotState() = default;
 
-    RobotState(const Protos::Immortals::RobotState &t_robot)
+    explicit RobotState(const Protos::Immortals::RobotState &t_robot)
     {
         vision_id = t_robot.id();
         color     = static_cast<TeamColor>(t_robot.color());
@@ -200,7 +200,7 @@ struct BallState
 
     BallState() = default;
 
-    BallState(const Protos::Immortals::BallState &t_ball)
+    explicit BallState(const Protos::Immortals::BallState &t_ball)
     {
         position = Vec2{t_ball.position()};
         velocity = Vec2{t_ball.velocity()};
@@ -208,7 +208,7 @@ struct BallState
         seen_state = static_cast<SeenState>(t_ball.seen_state());
     }
 
-    BallState(const Protos::Ssl::Vision::DetectionBall &t_ball)
+    explicit BallState(const Protos::Ssl::Vision::DetectionBall &t_ball)
     {
         position   = Vec2(t_ball.x(), t_ball.y());
         seen_state = SeenState::Seen;
@@ -252,7 +252,7 @@ struct FieldState
 
     FieldState() = default;
 
-    FieldState(const Protos::Ssl::Vision::GeometryFieldSize &t_field)
+    explicit FieldState(const Protos::Ssl::Vision::GeometryFieldSize &t_field)
     {
         width  = t_field.field_length() / 2.0f;
         height = t_field.field_width() / 2.0f;
@@ -305,20 +305,20 @@ struct WorldState
         }
     }
 
-    WorldState(const Protos::Immortals::WorldState &t_state)
+    explicit WorldState(const Protos::Immortals::WorldState &t_state)
     {
-        time = Common::TimePoint::fromMicroseconds(t_state.time());
+        time = TimePoint::fromMicroseconds(t_state.time());
 
-        ball = t_state.ball();
+        ball = static_cast<BallState>(t_state.ball());
 
         for (const auto &robot : t_state.own_robot())
         {
-            own_robot[robot.id()] = robot;
+            own_robot[robot.id()] = static_cast<RobotState>(robot);
         }
 
         for (const auto &robot : t_state.opp_robot())
         {
-            opp_robot[robot.id()] = robot;
+            opp_robot[robot.id()] = static_cast<RobotState>(robot);
         }
     }
 

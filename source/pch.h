@@ -109,6 +109,7 @@
 #if FEATURE_DEBUG
 #include "debugging/color.h"
 #include "debugging/draw.h"
+#include "debugging/execution_time.h"
 #include "debugging/hub.h"
 
 #if FEATURE_LOGGING
