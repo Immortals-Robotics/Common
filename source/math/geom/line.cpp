@@ -52,7 +52,7 @@ std::vector<float> Line::abcFormula(const float t_a, const float t_b, const floa
     // discriminant is b^2 - 4*a*c
     const float discr = t_b * t_b - 4 * t_a * t_c;
 
-    if (std::abs(discr) < std::numeric_limits<float>::epsilon())
+    if (almostEqual(discr, 0.0f))
     {
         // discriminant = 0: only one solution
         return {-t_b / (2 * t_a)};
@@ -78,13 +78,17 @@ std::vector<Vec2> Line::intersect(const Circle &t_circle) const
     // fill in:(-c/b-t_circle.center.x)^2 + y^2 -2ky + t_circle.center.y^2 - r^2 = 0
     //         y^2 -2ky + (-c/b-t_circle.center.x)^2 + t_circle.center.y^2 - r^2 = 0
     // and determine solutions for y using abc-formula
-    if (std::abs(a) < std::numeric_limits<float>::epsilon())
+    if (almostEqual(a, 0.0f))
     {
-        const auto sol = abcFormula(1, -2 * t_circle.center.y,
-                                    ((-c / b) - t_circle.center.x) * ((-c / b) - t_circle.center.x) +
-                                        t_circle.center.y * t_circle.center.y - t_circle.r * t_circle.r);
+        const auto solutions = abcFormula(1, -2 * t_circle.center.y,
+                                          ((-c / b) - t_circle.center.x) * ((-c / b) - t_circle.center.x) +
+                                              t_circle.center.y * t_circle.center.y - t_circle.r * t_circle.r);
 
-        return {{(-c / b), sol[0]}, {(-c / b), sol[1]}};
+        std::vector<Vec2> answer{};
+        answer.reserve(solutions.size());
+        for (const auto solution : solutions)
+            answer.emplace_back((-c / b), solution);
+        return answer;
     }
 
     // ay + bx + c = 0 => y = -b/a x - c/a, with da = -b/a and db = -c/a
@@ -105,8 +109,12 @@ std::vector<Vec2> Line::intersect(const Circle &t_circle) const
     const float d_c = t_circle.center.x * t_circle.center.x + db * db - 2 * t_circle.center.y * db +
                       t_circle.center.y * t_circle.center.y - t_circle.r * t_circle.r;
 
-    const auto sol = abcFormula(d_a, d_b, d_c);
+    const auto solutions = abcFormula(d_a, d_b, d_c);
 
-    return {{sol[0], da * sol[0] + db}, {sol[1], da * sol[1] + db}};
+    std::vector<Vec2> answer{};
+    answer.reserve(solutions.size());
+    for (const auto solution : solutions)
+        answer.emplace_back(solution, da * solution + db);
+    return answer;
 }
 } // namespace Immortals::Common
