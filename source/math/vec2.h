@@ -8,9 +8,6 @@ struct Angle;
 
 struct Vec2
 {
-    float x = 0.0f;
-    float y = 0.0f;
-
     Vec2() = default;
 
     explicit constexpr Vec2(const float t_f) : Vec2(t_f, t_f)
@@ -61,7 +58,7 @@ struct Vec2
     {
         const float length = this->length();
 
-        return length == 0.0 ? Vec2{0.0, 0.0} : *this / length;
+        return almostEqual(length, 0.0f) ? Vec2{} : *this / length;
     }
 
     [[nodiscard]] float length() const
@@ -229,6 +226,9 @@ struct Vec2
     {
         return {std::abs(x), std::abs(y)};
     }
+
+    float x = 0.0f;
+    float y = 0.0f;
 };
 } // namespace Immortals::Common
 

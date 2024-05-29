@@ -48,7 +48,7 @@ struct Vec3
     {
         const float length = this->length();
 
-        return length == 0.0 ? Vec3{0.0, 0.0, 0.0} : *this / length;
+        return almostEqual(length, 0.0f) ? Vec3{} : *this / length;
     }
 
     [[nodiscard]] float length() const
