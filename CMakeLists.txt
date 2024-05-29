@@ -126,6 +126,7 @@ set(HEADER_FILES
         source/math/geom/line_segment.h
         source/math/geom/line.h
         source/math/geom/rect.h
+        source/math/geom/robot.h
         source/math/geom/triangle.h
 
         source/network/address.h

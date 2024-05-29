@@ -87,6 +87,7 @@
 #include "math/geom/line.h"
 #include "math/geom/line_segment.h"
 #include "math/geom/rect.h"
+#include "math/geom/robot.h"
 #include "math/geom/triangle.h"
 #include "math/helpers.h"
 #include "math/linear.h"
