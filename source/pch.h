@@ -142,6 +142,7 @@
 #endif
 
 #include "state/field/ball_model.h"
+#include "state/field/camera_calibration.h"
 
 #include "state/field/field.h"
 

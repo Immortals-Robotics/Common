@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ball_model.h"
+#include "camera_calibration.h"
 
 namespace Immortals::Common
 {
@@ -26,6 +27,8 @@ struct FieldState
 
     float ball_radius  = 21.5f;
     float robot_radius = 90.0f;
+
+    std::array<CameraCalibration, Config::Vision::kCamCount> camera_calibrations;
 
     BallModelStraightTwoPhase ball_model_straight;
     BallModelChipFixedLoss    ball_model_chip;
@@ -63,6 +66,11 @@ struct FieldState
 
         if (t_data.field().has_max_robot_radius())
             robot_radius = t_data.field().max_robot_radius();
+
+        for (const auto &calib : t_data.calib())
+        {
+            camera_calibrations[calib.camera_id()] = CameraCalibration{calib};
+        }
 
         if (t_data.has_models())
         {

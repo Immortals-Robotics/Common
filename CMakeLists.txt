@@ -138,6 +138,7 @@ set(HEADER_FILES
         source/state/seen_state.h
         source/state/world.h
         source/state/field/ball_model.h
+        source/state/field/camera_calibration.h
         source/state/field/field.h
         source/state/raw/ball.h
         source/state/raw/frame.h
