@@ -131,8 +131,16 @@ set(HEADER_FILES
 
         source/network/address.h
 
+        source/state/ball.h
+        source/state/field.h
         source/state/referee.h
+        source/state/robot.h
+        source/state/seen_state.h
         source/state/world.h
+        source/state/raw/ball.h
+        source/state/raw/frame.h
+        source/state/raw/robot.h
+        source/state/raw/world.h
 
         source/time/duration.h
         source/time/time_point.h

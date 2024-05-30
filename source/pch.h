@@ -141,6 +141,19 @@
 #include "network/nng_server.h"
 #endif
 
+#include "state/raw/frame.h"
+
+#include "state/raw/ball.h"
+#include "state/raw/robot.h"
+
+#include "state/raw/world.h"
+
+#include "state/seen_state.h"
+
+#include "state/ball.h"
+#include "state/robot.h"
+
+#include "state/field.h"
 #include "state/referee.h"
 #include "state/world.h"
 
