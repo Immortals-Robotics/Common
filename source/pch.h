@@ -141,6 +141,10 @@
 #include "network/nng_server.h"
 #endif
 
+#include "state/field/ball_model.h"
+
+#include "state/field/field.h"
+
 #include "state/raw/frame.h"
 
 #include "state/raw/ball.h"
@@ -153,7 +157,6 @@
 #include "state/ball.h"
 #include "state/robot.h"
 
-#include "state/field.h"
 #include "state/referee.h"
 #include "state/world.h"
 
