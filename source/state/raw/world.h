@@ -89,5 +89,15 @@ struct RawWorldState
             blue_robots.emplace_back(robot, TeamColor::Blue, &frames, frame_idx);
         }
     }
+
+    void clear()
+    {
+        time = TimePoint{};
+
+        frames.clear();
+        balls.clear();
+        yellow_robots.clear();
+        blue_robots.clear();
+    }
 };
 } // namespace Immortals::Common
