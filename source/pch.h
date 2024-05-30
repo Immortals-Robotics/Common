@@ -80,6 +80,10 @@
 #include <protos/immortals/state.pb.h>
 #include <protos/ssl-vision/messages_robocup_ssl_wrapper.pb.h>
 
+#include "time/duration.h"
+#include "time/time_point.h"
+#include "time/timer.h"
+
 #include "services.h"
 
 #include "math/angle.h"
@@ -168,7 +172,3 @@
 #endif
 #include "storage/storage.h"
 #endif
-
-#include "time/duration.h"
-#include "time/time_point.h"
-#include "time/timer.h"
