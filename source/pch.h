@@ -153,13 +153,14 @@
 
 #include "state/raw/world.h"
 
-#include "state/seen_state.h"
+#include "state/world/seen_state.h"
 
-#include "state/ball.h"
-#include "state/robot.h"
+#include "state/world/ball.h"
+#include "state/world/robot.h"
+
+#include "state/world/world.h"
 
 #include "state/referee.h"
-#include "state/world.h"
 
 #if FEATURE_STORAGE
 #if FEATURE_NNG

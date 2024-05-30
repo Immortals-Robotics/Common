@@ -6,7 +6,6 @@
 #include "wrapper.h"
 
 #include "../network/nng_server.h"
-#include "../state/world.h"
 #include "../time/time_point.h"
 
 namespace Immortals::Common::Debug
