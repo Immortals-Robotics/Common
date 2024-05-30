@@ -65,6 +65,7 @@ struct Vec2
     {
         return sqrt(x * x + y * y);
     }
+
     [[nodiscard]] float lengthSquared() const
     {
         return x * x + y * y;

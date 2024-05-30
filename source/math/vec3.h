@@ -56,9 +56,24 @@ struct Vec3
         return sqrt(x * x + y * y + z * z);
     }
 
+    [[nodiscard]] float lengthSquared() const
+    {
+        return x * x + y * y + z * z;
+    }
+
     [[nodiscard]] float dot(const Vec3 t_v) const
     {
         return x * t_v.x + y * t_v.y + z * t_v.z;
+    }
+
+    [[nodiscard]] float distanceTo(const Vec3 t_v) const
+    {
+        return (t_v - *this).length();
+    }
+
+    [[nodiscard]] float distanceSquaredTo(const Vec3 t_v) const
+    {
+        return (t_v - *this).lengthSquared();
     }
 
     [[nodiscard]] Vec3 operator+(const Vec3 t_v) const
@@ -153,6 +168,26 @@ struct Vec3
     [[nodiscard]] Vec3 operator+() const
     {
         return *this;
+    }
+
+    [[nodiscard]] bool operator==(const Vec3 t_v) const
+    {
+        return almostEqual(x, t_v.x) && almostEqual(y, t_v.y) && almostEqual(z, t_v.z);
+    }
+
+    [[nodiscard]] bool operator!=(const Vec3 t_v) const
+    {
+        return !(*this == t_v);
+    }
+
+    [[nodiscard]] Vec2 xy() const
+    {
+        return {x, y};
+    }
+
+    [[nodiscard]] Vec3 abs() const
+    {
+        return {std::abs(x), std::abs(y), std::abs(z)};
     }
 
     float x = 0.0f;
