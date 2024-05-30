@@ -49,7 +49,7 @@ public:
 public:
     RefereeState() = default;
 
-    RefereeState(const Protos::Immortals::RefereeState &t_state)
+    explicit RefereeState(const Protos::Immortals::RefereeState &t_state)
     {
         time = TimePoint::fromMicroseconds(t_state.time());
 
