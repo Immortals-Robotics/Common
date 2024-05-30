@@ -7,74 +7,198 @@ namespace Immortals::Common
 {
 enum class SeenState
 {
-    CompletelyOut = 0,
-    TemprolilyOut = 1,
-    Seen          = 2,
+    CompletelyOut  = 0,
+    TemporarilyOut = 1,
+    Seen           = 2,
+};
+
+struct RawFrame
+{
+    unsigned camera_id    = 0;
+    unsigned frame_number = 0;
+
+    TimePoint t_capture;
+    TimePoint t_sent;
+    TimePoint t_capture_camera;
+
+    RawFrame() = default;
+
+    explicit RawFrame(const Protos::Ssl::Vision::DetectionFrame &t_frame)
+    {
+        camera_id    = t_frame.camera_id();
+        frame_number = t_frame.frame_number();
+
+        t_capture        = TimePoint::fromSeconds(t_frame.t_capture());
+        t_sent           = TimePoint::fromSeconds(t_frame.t_sent());
+        t_capture_camera = TimePoint::fromSeconds(t_frame.t_capture_camera());
+    }
+
+    explicit RawFrame(const Protos::Immortals::RawFrame &t_frame)
+    {
+        camera_id    = t_frame.camera_id();
+        frame_number = t_frame.frame_number();
+
+        t_capture        = TimePoint::fromMicroseconds(t_frame.t_capture());
+        t_sent           = TimePoint::fromMicroseconds(t_frame.t_sent());
+        t_capture_camera = TimePoint::fromMicroseconds(t_frame.t_capture_camera());
+    }
+
+    void fillProto(Protos::Immortals::RawFrame *const t_frame) const
+    {
+        t_frame->set_camera_id(camera_id);
+        t_frame->set_frame_number(frame_number);
+
+        t_frame->set_t_capture(t_capture.microseconds());
+        t_frame->set_t_sent(t_sent.microseconds());
+        t_frame->set_t_capture_camera(t_capture_camera.microseconds());
+    }
 };
 
 struct RawRobotState
 {
-    int       vision_id;
+    float confidence = 0.0f;
+
+    int       id;
     TeamColor color;
 
-    Vec2  position;
+    float height = 0.0f;
+
+    Vec2 position;
+    Vec2 pixel_position;
+
     Angle angle;
 
     RawRobotState() = default;
 
-    RawRobotState(const Protos::Ssl::Vision::DetectionRobot &t_robot, const TeamColor t_color)
+    RawRobotState(const Protos::Ssl::Vision::DetectionRobot &t_robot, const TeamColor t_color,
+                  const std::vector<RawFrame> *const t_frames, const unsigned t_frame_idx)
     {
-        vision_id = t_robot.robot_id();
-        color     = t_color;
+        m_frames    = t_frames;
+        m_frame_idx = t_frame_idx;
 
-        position = Vec2(t_robot.x(), t_robot.y());
-        angle    = Angle::fromRad(t_robot.orientation());
+        confidence = t_robot.confidence();
+
+        id    = t_robot.robot_id();
+        color = t_color;
+
+        height = t_robot.height();
+
+        position       = Vec2(t_robot.x(), t_robot.y());
+        pixel_position = Vec2(t_robot.pixel_x(), t_robot.pixel_y());
+
+        angle = Angle::fromRad(t_robot.orientation());
     }
 
-    explicit RawRobotState(const Protos::Immortals::RawRobotState &t_robot)
+    explicit RawRobotState(const Protos::Immortals::RawRobotState &t_robot, const std::vector<RawFrame> *const t_frames)
     {
-        vision_id = t_robot.id();
-        color     = static_cast<TeamColor>(t_robot.color());
+        m_frames    = t_frames;
+        m_frame_idx = t_robot.frame_idx();
 
-        position = Vec2{t_robot.position()};
-        angle    = Angle{t_robot.angle()};
+        confidence = t_robot.confidence();
+
+        id    = t_robot.id();
+        color = static_cast<TeamColor>(t_robot.color());
+
+        height = t_robot.height();
+
+        position       = Vec2{t_robot.position()};
+        pixel_position = Vec2{t_robot.pixel_position()};
+
+        angle = Angle{t_robot.angle()};
     }
 
     void fillProto(Protos::Immortals::RawRobotState *const t_state) const
     {
-        t_state->set_id(vision_id);
+        t_state->set_frame_idx(m_frame_idx);
+
+        t_state->set_confidence(confidence);
+
+        t_state->set_id(id);
         t_state->set_color(static_cast<Protos::Immortals::TeamColor>(color));
 
+        t_state->set_height(height);
+
         position.fillProto(t_state->mutable_position());
+        pixel_position.fillProto(t_state->mutable_pixel_position());
+
         angle.fillProto(t_state->mutable_angle());
     }
+
+    const RawFrame &frame() const
+    {
+        return (*m_frames)[m_frame_idx];
+    }
+
+private:
+    const std::vector<RawFrame> *m_frames    = nullptr;
+    unsigned                     m_frame_idx = 0;
 };
 
 struct RawBallState
 {
-    Vec2 position;
+    float confidence = 0.0f;
+
+    Vec3 position;
+    Vec2 pixel_position;
+
+    unsigned area = 0;
 
     RawBallState() = default;
 
-    explicit RawBallState(const Protos::Ssl::Vision::DetectionBall &t_ball)
+    explicit RawBallState(const Protos::Ssl::Vision::DetectionBall &t_ball, const std::vector<RawFrame> *const t_frames,
+                          const unsigned t_frame_idx)
     {
-        position = Vec2(t_ball.x(), t_ball.y());
+        m_frames    = t_frames;
+        m_frame_idx = t_frame_idx;
+
+        confidence = t_ball.confidence();
+
+        position       = Vec3(t_ball.x(), t_ball.y(), t_ball.z());
+        pixel_position = Vec2(t_ball.pixel_x(), t_ball.pixel_y());
+
+        area = t_ball.area();
     }
 
-    explicit RawBallState(const Protos::Immortals::RawBallState &t_ball)
+    explicit RawBallState(const Protos::Immortals::RawBallState &t_ball, const std::vector<RawFrame> *const t_frames)
     {
-        position = Vec2{t_ball.position()};
+        m_frames    = t_frames;
+        m_frame_idx = t_ball.frame_idx();
+
+        confidence = t_ball.confidence();
+
+        position       = Vec3{t_ball.position()};
+        pixel_position = Vec2{t_ball.pixel_position()};
+
+        area = t_ball.area();
     }
 
-    void fillProto(Protos::Immortals::RawBallState *const t_state) const
+    void fillProto(Protos::Immortals::RawBallState *const t_ball) const
     {
-        position.fillProto(t_state->mutable_position());
+        t_ball->set_frame_idx(m_frame_idx);
+
+        t_ball->set_confidence(confidence);
+
+        position.fillProto(t_ball->mutable_position());
+        pixel_position.fillProto(t_ball->mutable_pixel_position());
+
+        t_ball->set_area(area);
     }
+
+    const RawFrame &frame() const
+    {
+        return (*m_frames)[m_frame_idx];
+    }
+
+private:
+    const std::vector<RawFrame> *m_frames    = nullptr;
+    unsigned                     m_frame_idx = 0;
 };
 
 struct RawWorldState
 {
     TimePoint time;
+
+    std::vector<RawFrame> frames;
 
     std::vector<RawBallState> balls;
 
@@ -83,49 +207,39 @@ struct RawWorldState
 
     RawWorldState() = default;
 
-    explicit RawWorldState(const Protos::Ssl::Vision::DetectionFrame &t_frame)
-    {
-        time = Common::TimePoint::fromSeconds(t_frame.t_capture());
-
-        for (const auto &ball : t_frame.balls())
-        {
-            balls.emplace_back(ball);
-        }
-
-        for (const auto &robot : t_frame.robots_yellow())
-        {
-            yellow_robots.emplace_back(robot, TeamColor::Yellow);
-        }
-
-        for (const auto &robot : t_frame.robots_blue())
-        {
-            blue_robots.emplace_back(robot, TeamColor::Blue);
-        }
-    }
-
     explicit RawWorldState(const Protos::Immortals::RawWorldState &t_state)
     {
-        time = Common::TimePoint::fromMicroseconds(t_state.time());
+        time = TimePoint::fromMicroseconds(t_state.time());
+
+        for (const auto &frame : t_state.frames())
+        {
+            frames.emplace_back(frame);
+        }
 
         for (const auto &ball : t_state.balls())
         {
-            balls.emplace_back(ball);
+            balls.emplace_back(ball, &frames);
         }
 
         for (const auto &robot : t_state.yellow_robots())
         {
-            yellow_robots.emplace_back(robot);
+            yellow_robots.emplace_back(robot, &frames);
         }
 
         for (const auto &robot : t_state.blue_robots())
         {
-            blue_robots.emplace_back(robot);
+            blue_robots.emplace_back(robot, &frames);
         }
     }
 
     void fillProto(Protos::Immortals::RawWorldState *const t_state) const
     {
         t_state->set_time(time.microseconds());
+
+        for (const auto &frame : frames)
+        {
+            frame.fillProto(t_state->add_frames());
+        }
 
         for (const auto &ball : balls)
         {
@@ -140,6 +254,27 @@ struct RawWorldState
         for (const auto &robot : blue_robots)
         {
             robot.fillProto(t_state->add_blue_robots());
+        }
+    }
+
+    void addFrame(const Protos::Ssl::Vision::DetectionFrame &t_frame)
+    {
+        const unsigned frame_idx = frames.size();
+        frames.emplace_back(t_frame);
+
+        for (const auto &ball : t_frame.balls())
+        {
+            balls.emplace_back(ball, &frames, frame_idx);
+        }
+
+        for (const auto &robot : t_frame.robots_yellow())
+        {
+            yellow_robots.emplace_back(robot, TeamColor::Yellow, &frames, frame_idx);
+        }
+
+        for (const auto &robot : t_frame.robots_blue())
+        {
+            blue_robots.emplace_back(robot, TeamColor::Blue, &frames, frame_idx);
         }
     }
 };
@@ -222,9 +357,9 @@ struct BallState
         t_ball->set_seen_state(static_cast<Protos::Immortals::SeenState>(seen_state));
     }
 
-    Common::Line line() const
+    Line line() const
     {
-        return Common::Line::fromPointAndAngle(position, velocity.toAngle());
+        return Line::fromPointAndAngle(position, velocity.toAngle());
     }
 };
 

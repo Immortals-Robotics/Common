@@ -17,7 +17,7 @@ option(FEATURE_LOGGING "Logging implementation based on spdlog" OFF)
 option(FEATURE_CONFIG_FILE "Config file implementation based on tomlplusplus" OFF)
 option(FEATURE_DEBUG "Debug draw and log implementation using NNG and xxhash" OFF)
 
-project(common)
+project(common CXX)
 set(PACKAGE_NAME immortals-${PROJECT_NAME})
 
 set(CMAKE_DEBUG_POSTFIX d)
