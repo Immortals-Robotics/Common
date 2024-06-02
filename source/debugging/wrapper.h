@@ -21,7 +21,7 @@ struct Wrapper
 
     StringMap strings;
 
-    std::unordered_map<std::string, ExecutionTime> execution_times;
+    std::map<std::string, ExecutionTime> execution_times;
 
     Wrapper() = default;
 
