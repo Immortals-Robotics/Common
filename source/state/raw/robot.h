@@ -6,6 +6,9 @@ namespace Immortals::Common
 {
 struct RawRobotState
 {
+    unsigned frame_idx;
+    RawFrame frame;
+
     float confidence = 0.0f;
 
     int       id;
@@ -21,10 +24,10 @@ struct RawRobotState
     RawRobotState() = default;
 
     RawRobotState(const Protos::Ssl::Vision::DetectionRobot &t_robot, const TeamColor t_color,
-                  const std::vector<RawFrame> *const t_frames, const unsigned t_frame_idx)
+                  const std::vector<RawFrame> &t_frames, const unsigned t_frame_idx)
     {
-        m_frames    = t_frames;
-        m_frame_idx = t_frame_idx;
+        frame_idx = t_frame_idx;
+        frame     = t_frames[frame_idx];
 
         confidence = t_robot.confidence();
 
@@ -39,10 +42,10 @@ struct RawRobotState
         angle = Angle::fromRad(t_robot.orientation());
     }
 
-    explicit RawRobotState(const Protos::Immortals::RawRobotState &t_robot, const std::vector<RawFrame> *const t_frames)
+    explicit RawRobotState(const Protos::Immortals::RawRobotState &t_robot, const std::vector<RawFrame> &t_frames)
     {
-        m_frames    = t_frames;
-        m_frame_idx = t_robot.frame_idx();
+        frame_idx = t_robot.frame_idx();
+        frame     = t_frames[frame_idx];
 
         confidence = t_robot.confidence();
 
@@ -59,7 +62,7 @@ struct RawRobotState
 
     void fillProto(Protos::Immortals::RawRobotState *const t_state) const
     {
-        t_state->set_frame_idx(m_frame_idx);
+        t_state->set_frame_idx(frame_idx);
 
         t_state->set_confidence(confidence);
 
@@ -73,14 +76,5 @@ struct RawRobotState
 
         angle.fillProto(t_state->mutable_angle());
     }
-
-    const RawFrame &frame() const
-    {
-        return (*m_frames)[m_frame_idx];
-    }
-
-private:
-    const std::vector<RawFrame> *m_frames    = nullptr;
-    unsigned                     m_frame_idx = 0;
 };
 } // namespace Immortals::Common

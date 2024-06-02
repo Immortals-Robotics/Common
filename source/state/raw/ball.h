@@ -6,6 +6,9 @@ namespace Immortals::Common
 {
 struct RawBallState
 {
+    unsigned frame_idx;
+    RawFrame frame;
+
     float confidence = 0.0f;
 
     Vec3 position;
@@ -15,11 +18,11 @@ struct RawBallState
 
     RawBallState() = default;
 
-    explicit RawBallState(const Protos::Ssl::Vision::DetectionBall &t_ball, const std::vector<RawFrame> *const t_frames,
+    explicit RawBallState(const Protos::Ssl::Vision::DetectionBall &t_ball, const std::vector<RawFrame> &t_frames,
                           const unsigned t_frame_idx)
     {
-        m_frames    = t_frames;
-        m_frame_idx = t_frame_idx;
+        frame_idx = t_frame_idx;
+        frame     = t_frames[frame_idx];
 
         confidence = t_ball.confidence();
 
@@ -29,10 +32,10 @@ struct RawBallState
         area = t_ball.area();
     }
 
-    explicit RawBallState(const Protos::Immortals::RawBallState &t_ball, const std::vector<RawFrame> *const t_frames)
+    explicit RawBallState(const Protos::Immortals::RawBallState &t_ball, const std::vector<RawFrame> &t_frames)
     {
-        m_frames    = t_frames;
-        m_frame_idx = t_ball.frame_idx();
+        frame_idx = t_ball.frame_idx();
+        frame     = t_frames[frame_idx];
 
         confidence = t_ball.confidence();
 
@@ -44,7 +47,7 @@ struct RawBallState
 
     void fillProto(Protos::Immortals::RawBallState *const t_ball) const
     {
-        t_ball->set_frame_idx(m_frame_idx);
+        t_ball->set_frame_idx(frame_idx);
 
         t_ball->set_confidence(confidence);
 
@@ -53,14 +56,5 @@ struct RawBallState
 
         t_ball->set_area(area);
     }
-
-    const RawFrame &frame() const
-    {
-        return (*m_frames)[m_frame_idx];
-    }
-
-private:
-    const std::vector<RawFrame> *m_frames    = nullptr;
-    unsigned                     m_frame_idx = 0;
 };
 } // namespace Immortals::Common

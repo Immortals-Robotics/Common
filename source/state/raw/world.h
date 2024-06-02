@@ -30,17 +30,17 @@ struct RawWorldState
 
         for (const auto &ball : t_state.balls())
         {
-            balls.emplace_back(ball, &frames);
+            balls.emplace_back(ball, frames);
         }
 
         for (const auto &robot : t_state.yellow_robots())
         {
-            yellow_robots.emplace_back(robot, &frames);
+            yellow_robots.emplace_back(robot, frames);
         }
 
         for (const auto &robot : t_state.blue_robots())
         {
-            blue_robots.emplace_back(robot, &frames);
+            blue_robots.emplace_back(robot, frames);
         }
     }
 
@@ -76,17 +76,17 @@ struct RawWorldState
 
         for (const auto &ball : t_frame.balls())
         {
-            balls.emplace_back(ball, &frames, frame_idx);
+            balls.emplace_back(ball, frames, frame_idx);
         }
 
         for (const auto &robot : t_frame.robots_yellow())
         {
-            yellow_robots.emplace_back(robot, TeamColor::Yellow, &frames, frame_idx);
+            yellow_robots.emplace_back(robot, TeamColor::Yellow, frames, frame_idx);
         }
 
         for (const auto &robot : t_frame.robots_blue())
         {
-            blue_robots.emplace_back(robot, TeamColor::Blue, &frames, frame_idx);
+            blue_robots.emplace_back(robot, TeamColor::Blue, frames, frame_idx);
         }
     }
 
