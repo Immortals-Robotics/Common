@@ -11,4 +11,9 @@ inline float sign(const float t_f)
 {
     return std::copysign(1.0f, t_f);
 }
+
+inline int signInt(const float t_f)
+{
+    return std::copysign(1, t_f);
+}
 } // namespace Immortals::Common

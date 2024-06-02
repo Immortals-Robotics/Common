@@ -25,7 +25,36 @@ struct Robot
         return dis < frontDis() || (dis <= radius && rel.toAngle().isBetween(start_angle, end_angle));
     }
 
-    static const inline Angle kHalfArcAngle = Angle::fromDeg(25.0f);
+    bool canKick(const Vec2 t_point) const
+    {
+        const Vec2 p1 = center + (angle + kHalfArcAngle).toUnitVec() * radius;
+        const Vec2 p2 = center + (angle - kHalfArcAngle).toUnitVec() * radius;
+        const Vec2 p3 = center + (angle - kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * kKickerDepth;
+        const Vec2 p4 = center + (angle + kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * kKickerDepth;
+
+        const Vec2 v1 = t_point - p1;
+        const Vec2 v2 = t_point - p2;
+        const Vec2 v3 = t_point - p3;
+        const Vec2 v4 = t_point - p4;
+
+        const float cross1 = (p2 - p1).cross(v1);
+        const float cross2 = (p3 - p2).cross(v2);
+        const float cross3 = (p4 - p3).cross(v3);
+        const float cross4 = (p1 - p4).cross(v4);
+
+        return signInt(cross1) == signInt(cross2) && signInt(cross2) == signInt(cross3) &&
+               signInt(cross3) == signInt(cross4);
+    }
+
+    LineSegment getFrontLine() const
+    {
+        const Vec2 p1 = center + (angle + kHalfArcAngle).toUnitVec() * radius;
+        const Vec2 p2 = center + (angle - kHalfArcAngle).toUnitVec() * radius;
+        return LineSegment(p1, p2);
+    }
+
+    static const inline Angle kHalfArcAngle = Angle::fromDeg(50.0f);
+    static constexpr float    kKickerDepth  = 150.0f;
 
     Vec2  center;
     float radius;

@@ -80,6 +80,14 @@ struct Vec2
         return x * t_v.x + y * t_v.y;
     }
 
+    // calculates the cross product of (x,y,0) and (t_v.x,t_v.y,0)
+    // the resulting vector is perpendicular to xy-plane and therefore
+    // only has a z component, which is the return value of this function.
+    [[nodiscard]] float cross(const Vec2 t_v) const
+    {
+        return x * t_v.y - y * t_v.x;
+    }
+
     [[nodiscard]] float distanceTo(const Vec2 t_v) const
     {
         return (t_v - *this).length();
