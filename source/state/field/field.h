@@ -35,7 +35,7 @@ struct FieldState
 
     FieldState() = default;
 
-    explicit FieldState(const Protos::Ssl::Vision::GeometryData &t_data)
+    void update(const Protos::Ssl::Vision::GeometryData &t_data)
     {
         width  = t_data.field().field_length() / 2.0f;
         height = t_data.field().field_width() / 2.0f;
