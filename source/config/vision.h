@@ -28,8 +28,14 @@ struct Vision final : IConfig
         max_robot_frame_not_seen = t_node["max_robot_frame_not_seen"].value_or(max_robot_frame_not_seen);
         max_ball_frame_not_seen  = t_node["max_ball_frame_not_seen"].value_or(max_ball_frame_not_seen);
 
-        use_kalman_pos = t_node["use_kalman_pos"].value_or(use_kalman_pos);
-        use_kalman_ang = t_node["use_kalman_ang"].value_or(use_kalman_ang);
+        use_new_ball_kalman = t_node["use_new_ball_kalman"].value_or(use_new_ball_kalman);
+
+        camera_delay     = t_node["camera_delay"].value_or(camera_delay);
+        kick_threshold   = t_node["kick_threshold"].value_or(kick_threshold);
+        chip_max_error   = t_node["chip_max_error"].value_or(chip_max_error);
+        chip_min_records = t_node["chip_min_records"].value_or(chip_min_records);
+        chip_max_records = t_node["chip_max_records"].value_or(chip_max_records);
+        chip_max_vel_z   = t_node["chip_max_vel_z"].value_or(chip_max_vel_z);
     }
 #endif
 
@@ -49,7 +55,12 @@ struct Vision final : IConfig
     int max_robot_frame_not_seen = 200;
     int max_ball_frame_not_seen  = 120; // 2 seconds
 
-    bool use_kalman_pos = true;
-    bool use_kalman_ang = true; // TODO: check if this is in serious need in reality
+    bool  use_new_ball_kalman = true;
+    float camera_delay        = 0.0;
+    float kick_threshold      = 0.0;
+    float chip_max_error      = 300000;
+    int   chip_min_records    = 3;
+    int   chip_max_records    = 200;
+    float chip_max_vel_z      = 7000.;
 };
 } // namespace Immortals::Common::Config
