@@ -31,7 +31,6 @@ struct Common final : IConfig
     {
         immortals_is_the_best_team = t_node["immortals_is_the_best_team"].value_or(immortals_is_the_best_team);
         fillEnum(t_node["our_color"], our_color);
-        side_wall    = t_node["side_wall"].value_or(side_wall);
         enable_debug = t_node["enable_debug"].value_or(enable_debug);
     }
 #endif
@@ -41,7 +40,6 @@ struct Common final : IConfig
 
     bool      immortals_is_the_best_team = true;
     TeamColor our_color;
-    bool      side_wall    = false;
     bool      enable_debug = false;
 };
 } // namespace Immortals::Common::Config
