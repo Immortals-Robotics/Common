@@ -138,6 +138,11 @@ struct Command
         return placeBall() && !our();
     }
 
+    bool ready() const
+    {
+        return type & Ready;
+    }
+
     bool canMove() const
     {
         return !halt();
@@ -150,7 +155,7 @@ struct Command
 
     bool canKickBall() const
     {
-        return gameOn() || (ourRestart() && type & Ready);
+        return gameOn() || (ourRestart() && ready());
     }
 
     // TODO: check this in the rules
@@ -159,7 +164,7 @@ struct Command
         return stop();
     }
 
-    std::string_view toString() const
+    std::string_view typeString() const
     {
         if (gameOn())
             return "Game on";
@@ -167,14 +172,23 @@ struct Command
             return "Stop";
         if (halt())
             return "Halt";
-        if (kickoff())
-            return our() ? "Our kickoff" : "Their kickoff";
-        if (penalty())
-            return our() ? "Our penalty" : "Their penalty";
+
+        if (ourKickoff())
+            return ready() ? "Our kickoff (ready)" : "Our kickoff (not ready)";
+        if (theirKickoff())
+            return ready() ? "Their kickoff (ready)" : "Their kickoff (not ready)";
+
+        if (ourPenaltyKick())
+            return ready() ? "Our penalty (ready)" : "Our penalty (not ready)";
+        if (theirPenaltyKick())
+            return ready() ? "Their penalty (ready)" : "Their penalty (not ready)";
+
         if (directKick())
             return our() ? "Our direct free kick" : "Their direct free kick";
         if (placeBall())
             return our() ? "Our ball placement" : "Their ball placement";
+
+        return "Unknown";
     }
 
     unsigned  id;
@@ -191,7 +205,7 @@ struct fmt::formatter<Immortals::Common::Referee::Command> : fmt::formatter<std:
 {
     auto format(Immortals::Common::Referee::Command t_cmd, format_context &t_ctx) const
     {
-        return fmt::format_to(t_ctx.out(), "{}", t_cmd.toString());
+        return fmt::format_to(t_ctx.out(), "[{}] {}", t_cmd.id, t_cmd.typeString());
     }
 };
 #endif
