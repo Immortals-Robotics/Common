@@ -131,7 +131,6 @@ set(HEADER_FILES
 
         source/network/address.h
 
-        source/state/referee.h
         source/state/field/ball_model.h
         source/state/field/camera_calibration.h
         source/state/field/field.h
@@ -139,6 +138,10 @@ set(HEADER_FILES
         source/state/raw/frame.h
         source/state/raw/robot.h
         source/state/raw/world.h
+        source/state/referee/command.h
+        source/state/referee/match.h
+        source/state/referee/state.h
+        source/state/referee/team_info.h
         source/state/world/ball.h
         source/state/world/robot.h
         source/state/world/seen_state.h

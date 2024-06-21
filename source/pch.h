@@ -78,7 +78,8 @@
 #endif
 
 #include <protos/immortals/debug.pb.h>
-#include <protos/immortals/state.pb.h>
+#include <protos/immortals/referee_state.pb.h>
+#include <protos/immortals/world_state.pb.h>
 #include <protos/ssl-vision/messages_robocup_ssl_wrapper.pb.h>
 
 #include "time/duration.h"
@@ -165,7 +166,7 @@
 
 #include "state/world/world.h"
 
-#include "state/referee.h"
+#include "state/referee/state.h"
 
 #if FEATURE_STORAGE
 #if FEATURE_NNG
