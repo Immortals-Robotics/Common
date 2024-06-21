@@ -35,6 +35,11 @@ struct State
 
         // state, ready, color, and last_command is set by the Referee module
 
+        if (t_referee.has_current_action_time_remaining())
+        {
+            time_remaining = Duration::fromMicroseconds(t_referee.current_action_time_remaining());
+        }
+
         designated_position = static_cast<Vec2>(t_referee.designated_position());
 
         blue_info   = static_cast<TeamInfo>(t_referee.blue());
@@ -50,9 +55,10 @@ struct State
         stage           = static_cast<Stage>(t_state.stage());
         stage_time_left = Duration::fromMicroseconds(t_state.stage_time_left());
 
-        state = static_cast<GameState>(t_state.state());
-        ready = t_state.ready();
-        color = static_cast<TeamColor>(t_state.color());
+        state          = static_cast<GameState>(t_state.state());
+        ready          = t_state.ready();
+        color          = static_cast<TeamColor>(t_state.color());
+        time_remaining = Duration::fromMicroseconds(t_state.time_remaining());
 
         last_command = static_cast<Command>(t_state.last_command());
 
@@ -60,6 +66,9 @@ struct State
 
         blue_info   = static_cast<TeamInfo>(t_state.blue_info());
         yellow_info = static_cast<TeamInfo>(t_state.yellow_info());
+
+        our_side       = static_cast<TeamSide>(t_state.our_side());
+        status_message = t_state.status_message();
     }
 
     void fillProto(Protos::Immortals::Referee::State *const t_state) const
@@ -74,6 +83,7 @@ struct State
         t_state->set_state(static_cast<Protos::Immortals::Referee::GameState>(state));
         t_state->set_ready(ready);
         t_state->set_color(static_cast<Protos::Immortals::TeamColor>(color));
+        t_state->set_time_remaining(time_remaining.microseconds());
 
         last_command.fillProto(t_state->mutable_last_command());
 
@@ -81,6 +91,9 @@ struct State
 
         blue_info.fillProto(t_state->mutable_blue_info());
         yellow_info.fillProto(t_state->mutable_yellow_info());
+
+        t_state->set_our_side(static_cast<Protos::Immortals::TeamSide>(our_side));
+        t_state->set_status_message(status_message);
     }
 
     bool our() const
@@ -113,6 +126,16 @@ struct State
         return state == GameState::Stop;
     }
 
+    const TeamInfo &ourInfo() const
+    {
+        return config().common.our_color == TeamColor::Blue ? blue_info : yellow_info;
+    }
+
+    const TeamInfo &oppInfo() const
+    {
+        return config().common.our_color == TeamColor::Yellow ? blue_info : yellow_info;
+    }
+
     // when transitioned to this state
     TimePoint time;
 
@@ -124,6 +147,7 @@ struct State
     GameState state = GameState::None;
     bool      ready = false;
     TeamColor color = TeamColor::Blue;
+    Duration  time_remaining;
 
     Command last_command;
 
@@ -131,6 +155,10 @@ struct State
 
     TeamInfo blue_info;
     TeamInfo yellow_info;
+
+    TeamSide our_side = TeamSide::Left;
+
+    std::string status_message;
 };
 } // namespace Immortals::Common::Referee
 
