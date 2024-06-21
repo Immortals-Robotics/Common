@@ -51,6 +51,11 @@
 
 #if FEATURE_RAYLIB
 #include <raylib.h>
+
+// These are defined by raylib and will conflict with proto definitions
+#undef YELLOW
+#undef BLUE
+
 #endif
 
 #if FEATURE_IMGUI
@@ -77,10 +82,12 @@
 #include <xxhash.h>
 #endif
 
+#include <protos/ssl-game-controller/ssl_gc_referee_message.pb.h>
+#include <protos/ssl-vision/messages_robocup_ssl_wrapper.pb.h>
+
 #include <protos/immortals/debug.pb.h>
 #include <protos/immortals/referee_state.pb.h>
 #include <protos/immortals/world_state.pb.h>
-#include <protos/ssl-vision/messages_robocup_ssl_wrapper.pb.h>
 
 #include "time/duration.h"
 #include "time/time_point.h"

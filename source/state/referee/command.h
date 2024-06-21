@@ -4,208 +4,154 @@ namespace Immortals::Common::Referee
 {
 struct Command
 {
-    enum Type
+    enum class Type
     {
-        None      = 0,
-        GameOn    = 1 << 0,
-        GameOff   = 1 << 1,
-        Halt      = 1 << 2,
-        Kickoff   = 1 << 3,
-        Penalty   = 1 << 4,
-        Direct    = 1 << 5,
-        PlaceBall = 1 << 6,
-        Restart   = Kickoff | Penalty | Direct,
-        Sided     = Kickoff | Penalty | Direct | PlaceBall,
-        Ready     = 1 << 7,
-        Notready  = 1 << 8,
+        None = -1,
+
+        Halt                 = 0,
+        Stop                 = 1,
+        NormalStart          = 2,
+        ForceStart           = 3,
+        PrepareKickoffYellow = 4,
+        PrepareKickoffBlue   = 5,
+        PreparePenaltyYellow = 6,
+        PreparePenaltyBlue   = 7,
+        DirectFreeYellow     = 8,
+        DirectFreeBlue       = 9,
+        TimeoutYellow        = 12,
+        TimeoutBlue          = 13,
+        BallPlacementYellow  = 16,
+        BallPlacementBlue    = 17,
     };
 
     Command() = default;
 
+    explicit Command(const Protos::Ssl::Gc::Referee &t_packet)
+    {
+        id = t_packet.command_counter();
+
+        time_issued = TimePoint::fromMicroseconds(t_packet.command_timestamp());
+        time_sent   = TimePoint::fromMicroseconds(t_packet.packet_timestamp());
+
+        if (t_packet.has_source_identifier())
+        {
+            source_uuid = t_packet.source_identifier();
+        }
+
+        type = static_cast<Type>(t_packet.command());
+
+        if (t_packet.has_next_command())
+        {
+            next = static_cast<Type>(t_packet.next_command());
+        }
+    }
+
     explicit Command(const Protos::Immortals::Referee::Command &t_command)
     {
-        id   = t_command.id();
-        time = TimePoint::fromMicroseconds(t_command.time());
+        id = t_command.id();
+
+        time_issued = TimePoint::fromMicroseconds(t_command.time_issued());
+        time_sent   = TimePoint::fromMicroseconds(t_command.time_sent());
+
+        source_uuid = t_command.source_uuid();
 
         type = static_cast<Type>(t_command.type());
-
-        if (t_command.has_color())
-        {
-            color = static_cast<TeamColor>(t_command.color());
-        }
+        next = static_cast<Type>(t_command.next());
     }
 
     void fillProto(Protos::Immortals::Referee::Command *const t_command) const
     {
         t_command->set_id(id);
-        t_command->set_time(time.microseconds());
 
-        t_command->set_type(type);
+        t_command->set_time_issued(time_issued.microseconds());
+        t_command->set_time_sent(time_sent.microseconds());
 
-        if (color.has_value())
-        {
-            t_command->set_color(static_cast<Protos::Immortals::TeamColor>(color.value()));
-        }
-    }
+        t_command->set_source_uuid(source_uuid);
 
-    Type get() const
-    {
-        return type;
+        t_command->set_type(static_cast<Protos::Immortals::Referee::Command_Type>(type));
+        t_command->set_next(static_cast<Protos::Immortals::Referee::Command_Type>(next));
     }
 
-    bool our() const
-    {
-        return color == config().common.our_color;
-    }
+    unsigned id = 0;
 
-    bool stop() const
-    {
-        return type & GameOff;
-    }
+    TimePoint time_issued;
+    TimePoint time_sent;
 
-    bool halt() const
-    {
-        return type & Halt;
-    }
+    std::string source_uuid;
 
-    bool gameOn() const
-    {
-        return type & GameOn;
-    }
-
-    bool restart() const
-    {
-        return type & Restart;
-    }
-    bool ourRestart() const
-    {
-        return restart() && our();
-    }
-    bool theirRestart() const
-    {
-        return restart() && !our();
-    }
-
-    bool kickoff() const
-    {
-        return type & Kickoff;
-    }
-    bool ourKickoff() const
-    {
-        return kickoff() && our();
-    }
-    bool theirKickoff() const
-    {
-        return kickoff() && !our();
-    }
-
-    bool penalty() const
-    {
-        return type & Penalty;
-    }
-    bool ourPenaltyKick() const
-    {
-        return penalty() && our();
-    }
-    bool theirPenaltyKick() const
-    {
-        return penalty() && !our();
-    }
-
-    bool directKick() const
-    {
-        return type & Direct;
-    }
-    bool ourDirectKick() const
-    {
-        return directKick() && our();
-    }
-    bool theirDirectKick() const
-    {
-        return directKick() && !our();
-    }
-
-    bool placeBall() const
-    {
-        return type & PlaceBall;
-    }
-    bool ourPlaceBall() const
-    {
-        return placeBall() && our();
-    }
-    bool theirPlaceBall() const
-    {
-        return placeBall() && !our();
-    }
-
-    bool ready() const
-    {
-        return type & Ready;
-    }
-
-    bool canMove() const
-    {
-        return !halt();
-    }
-
-    bool allowedNearBall() const
-    {
-        return gameOn() || our();
-    }
-
-    bool canKickBall() const
-    {
-        return gameOn() || (ourRestart() && ready());
-    }
-
-    // TODO: check this in the rules
-    bool shouldSlowDown() const
-    {
-        return stop();
-    }
-
-    std::string_view typeString() const
-    {
-        if (gameOn())
-            return "Game on";
-        if (stop())
-            return "Stop";
-        if (halt())
-            return "Halt";
-
-        if (ourKickoff())
-            return ready() ? "Our kickoff (ready)" : "Our kickoff (not ready)";
-        if (theirKickoff())
-            return ready() ? "Their kickoff (ready)" : "Their kickoff (not ready)";
-
-        if (ourPenaltyKick())
-            return ready() ? "Our penalty (ready)" : "Our penalty (not ready)";
-        if (theirPenaltyKick())
-            return ready() ? "Their penalty (ready)" : "Their penalty (not ready)";
-
-        if (directKick())
-            return our() ? "Our direct free kick" : "Their direct free kick";
-        if (placeBall())
-            return our() ? "Our ball placement" : "Their ball placement";
-
-        return "Unknown";
-    }
-
-    unsigned  id;
-    TimePoint time;
-
-    Type                     type = Halt;
-    std::optional<TeamColor> color;
+    Type type = Type::None;
+    // The command that will be issued after the current stoppage and ball placement to continue the game.
+    Type next = Type::None;
 };
+
 } // namespace Immortals::Common::Referee
 
 #if FEATURE_LOGGING
 template <>
+struct fmt::formatter<Immortals::Common::Referee::Command::Type> : fmt::formatter<std::string>
+{
+    auto format(const Immortals::Common::Referee::Command::Type t_type, format_context &t_ctx) const
+    {
+        const char *type_str = "Unknown";
+        switch (t_type)
+        {
+        case Immortals::Common::Referee::Command::Type::None:
+            type_str = "None";
+            break;
+        case Immortals::Common::Referee::Command::Type::Halt:
+            type_str = "Halt";
+            break;
+        case Immortals::Common::Referee::Command::Type::Stop:
+            type_str = "Stop";
+            break;
+        case Immortals::Common::Referee::Command::Type::NormalStart:
+            type_str = "NormalStart";
+            break;
+        case Immortals::Common::Referee::Command::Type::ForceStart:
+            type_str = "ForceStart";
+            break;
+        case Immortals::Common::Referee::Command::Type::PrepareKickoffYellow:
+            type_str = "PrepareKickoffYellow";
+            break;
+        case Immortals::Common::Referee::Command::Type::PrepareKickoffBlue:
+            type_str = "PrepareKickoffBlue";
+            break;
+        case Immortals::Common::Referee::Command::Type::PreparePenaltyYellow:
+            type_str = "PreparePenaltyYellow";
+            break;
+        case Immortals::Common::Referee::Command::Type::PreparePenaltyBlue:
+            type_str = "PreparePenaltyBlue";
+            break;
+        case Immortals::Common::Referee::Command::Type::DirectFreeYellow:
+            type_str = "DirectFreeYellow";
+            break;
+        case Immortals::Common::Referee::Command::Type::DirectFreeBlue:
+            type_str = "DirectFreeBlue";
+            break;
+        case Immortals::Common::Referee::Command::Type::TimeoutYellow:
+            type_str = "TimeoutYellow";
+            break;
+        case Immortals::Common::Referee::Command::Type::TimeoutBlue:
+            type_str = "TimeoutBlue";
+            break;
+        case Immortals::Common::Referee::Command::Type::BallPlacementYellow:
+            type_str = "BallPlacementYellow";
+            break;
+        case Immortals::Common::Referee::Command::Type::BallPlacementBlue:
+            type_str = "BallPlacementBlue";
+            break;
+        }
+
+        return fmt::format_to(t_ctx.out(), "{}", type_str);
+    }
+};
+
+template <>
 struct fmt::formatter<Immortals::Common::Referee::Command> : fmt::formatter<std::string>
 {
-    auto format(Immortals::Common::Referee::Command t_cmd, format_context &t_ctx) const
+    auto format(const Immortals::Common::Referee::Command &t_command, format_context &t_ctx) const
     {
-        return fmt::format_to(t_ctx.out(), "[{}] {}", t_cmd.id, t_cmd.typeString());
+        return fmt::format_to(t_ctx.out(), "[{}] [{}] {}", t_command.id, t_command.time_issued, t_command.type);
     }
 };
 #endif

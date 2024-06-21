@@ -6,6 +6,40 @@ struct TeamInfo
 {
     TeamInfo() = default;
 
+    explicit TeamInfo(const Protos::Ssl::Gc::Referee_TeamInfo &t_team_info)
+    {
+        name = t_team_info.name();
+
+        score = t_team_info.score();
+
+        foul_counter = t_team_info.foul_counter();
+
+        red_cards    = t_team_info.red_cards();
+        yellow_cards = t_team_info.yellow_cards();
+
+        yellow_cards_time_left.reserve(t_team_info.yellow_card_times_size());
+        for (const uint64_t time : t_team_info.yellow_card_times())
+        {
+            yellow_cards_time_left.emplace_back(Duration::fromMicroseconds(time));
+        }
+
+        max_allowed_robots = t_team_info.max_allowed_bots();
+
+        ball_placement_failures         = t_team_info.ball_placement_failures();
+        ball_placement_failures_reached = t_team_info.ball_placement_failures_reached();
+        can_place_ball                  = t_team_info.can_place_ball();
+
+        timeouts_left     = t_team_info.timeouts();
+        timeout_time_left = Duration::fromMicroseconds(t_team_info.timeout_time());
+
+        gk_id = t_team_info.goalkeeper();
+
+        substitution_intent    = t_team_info.bot_substitution_intent();
+        substitution_allowed   = t_team_info.bot_substitution_allowed();
+        substitutions_left     = t_team_info.bot_substitutions_left();
+        substitution_time_left = Duration::fromMicroseconds(t_team_info.bot_substitution_time_left());
+    }
+
     explicit TeamInfo(const Protos::Immortals::Referee::TeamInfo &t_team_info)
     {
         name = t_team_info.name();
