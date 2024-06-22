@@ -96,34 +96,129 @@ struct State
         t_state->set_status_message(status_message);
     }
 
+    // helper functions for different states
     bool our() const
     {
         return color == config().common.our_color;
+    }
+
+    bool halt() const
+    {
+        return state == GameState::Halt;
+    }
+
+    bool stop() const
+    {
+        return state == GameState::Stop;
+    }
+
+    bool running() const
+    {
+        return state == GameState::Running;
+    }
+
+    bool kickoff() const
+    {
+        return state == GameState::Kickoff;
+    }
+    bool ourKickoff() const
+    {
+        return kickoff() && our();
+    }
+    bool theirKickoff() const
+    {
+        return kickoff() && !our();
+    }
+
+    bool penaltyKick() const
+    {
+        return state == GameState::Penalty;
+    }
+    bool ourPenaltyKick() const
+    {
+        return penaltyKick() && our();
+    }
+    bool theirPenaltyKick() const
+    {
+        return penaltyKick() && !our();
+    }
+
+    bool freeKick() const
+    {
+        return state == GameState::FreeKick;
+    }
+    bool ourFreeKick() const
+    {
+        return freeKick() && our();
+    }
+    bool theirFreeKick() const
+    {
+        return freeKick() && !our();
+    }
+
+    bool ballPlacement() const
+    {
+        return state == GameState::BallPlacement;
+    }
+    bool ourBallPlacement() const
+    {
+        return ballPlacement() && our();
+    }
+    bool theirBallPlacement() const
+    {
+        return ballPlacement() && !our();
     }
 
     bool restart() const
     {
         return state == GameState::Kickoff || state == GameState::Penalty || state == GameState::FreeKick;
     }
+    bool ourRestart() const
+    {
+        return restart() && our();
+    }
+    bool theirRestart() const
+    {
+        return restart() && !our();
+    }
 
+    bool timeout() const
+    {
+        return state == GameState::Timeout;
+    }
+    bool ourTimeout() const
+    {
+        return timeout() && our();
+    }
+    bool theirTimeout() const
+    {
+        return timeout() && !our();
+    }
+
+    // limitations in different states according to the rules
     bool canMove() const
     {
-        return state != GameState::Halt;
+        return !halt();
     }
 
     bool allowedNearBall() const
     {
-        return state == GameState::Running || ((restart() || state == GameState::BallPlacement) && our());
+        return running() || ourRestart() || ourBallPlacement();
     }
 
     bool canKickBall() const
     {
-        return state == GameState::Running || (restart() && our() && ready);
+        return running() || (ourRestart() && ready);
     }
 
     bool shouldSlowDown() const
     {
-        return state == GameState::Stop;
+        return stop();
+    }
+
+    bool canEnterField() const
+    {
+        return timeout();
     }
 
     const TeamInfo &ourInfo() const
