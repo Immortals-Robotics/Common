@@ -29,6 +29,13 @@
 
 #include <asio.hpp>
 
+// needed for thread name setting
+#if defined(_WIN32)
+#include <processthreadsapi.h>
+#elif defined(__linux__) || defined(__APPLE__)
+#include <pthread.h>
+#endif
+
 #if defined(_WIN32) // raylib uses these names as function parameters
 #undef near
 #undef far
@@ -119,6 +126,8 @@
 #if FEATURE_CONFIG_FILE
 #include "config/file.h"
 #endif
+
+#include "debugging/thread_name.h"
 
 #if FEATURE_DEBUG
 #include "debugging/color.h"

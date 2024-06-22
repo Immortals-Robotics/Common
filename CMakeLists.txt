@@ -113,6 +113,8 @@ set(HEADER_FILES
         source/pch.h
         source/services.h
 
+        source/debugging/thread_name.h
+
         source/logging/macros.h
 
         source/math/angle.h
