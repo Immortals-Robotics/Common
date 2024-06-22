@@ -221,6 +221,7 @@ struct State
         return timeout();
     }
 
+    // misc helper functions
     const TeamInfo &ourInfo() const
     {
         return config().common.our_color == TeamColor::Blue ? blue_info : yellow_info;
@@ -229,6 +230,12 @@ struct State
     const TeamInfo &oppInfo() const
     {
         return config().common.our_color == TeamColor::Yellow ? blue_info : yellow_info;
+    }
+
+    // time elapsed since transition to this state
+    Duration elapsed() const
+    {
+        return TimePoint::now() - time;
     }
 
     // when transitioned to this state
@@ -297,7 +304,7 @@ struct fmt::formatter<Immortals::Common::Referee::State> : fmt::formatter<std::s
             break;
         }
 
-        return fmt::format_to(t_ctx.out(), "[{}] {}", t_state.time, state_str);
+        return fmt::format_to(t_ctx.out(), "{}", state_str);
     }
 };
 #endif
