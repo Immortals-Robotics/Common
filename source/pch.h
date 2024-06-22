@@ -21,27 +21,28 @@
 #include <variant>
 #include <vector>
 
-#if FEATURE_UDP
 #if defined(_WIN32)
 #define NOGDI  // All GDI defines and routines
 #define NOUSER // All USER defines and routines
-#endif
-
-#include <asio.hpp>
-
+#define WIN32_LEAN_AND_MEAN
 // needed for thread name setting
-#if defined(_WIN32)
+#include <Windows.h>
 #include <processthreadsapi.h>
 #elif defined(__linux__) || defined(__APPLE__)
 #include <pthread.h>
 #endif
 
-#if defined(_WIN32) // raylib uses these names as function parameters
-#undef near
-#undef far
+#if FEATURE_UDP
+#include <asio.hpp>
+#include <google/protobuf/message_lite.h>
 #endif
 
-#include <google/protobuf/message_lite.h>
+#if defined(_WIN32)
+#undef min
+#undef max
+// raylib uses these names as function parameters
+#undef near
+#undef far
 #endif
 
 #if FEATURE_NNG
