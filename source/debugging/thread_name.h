@@ -12,7 +12,9 @@ inline void setThreadName(const char *name)
     {
         logError("Failed to set thread name \"{}\": {}", name, result);
     }
-#elif defined(__linux__) || defined(__APPLE__)
+#elif defined(__linux__)
+    pthread_setname_np(pthread_self(), name);
+#elif defined(__APPLE__)
     pthread_setname_np(name);
 #endif
 }
