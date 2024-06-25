@@ -30,7 +30,7 @@ namespace Immortals::Common
 #else
 #define LOG_MACRO(fn, lvl)                                                                                             \
     template <typename... Args>                                                                                        \
-    FORCEINLINE fn(const char *format, Args &&...args)                                                                 \
+    FORCEINLINE void fn(const char *format, Args &&...args)                                                                 \
     {                                                                                                                  \
         std::printf(format, std::forward<Args>(args)...);                                                              \
     }
