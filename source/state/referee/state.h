@@ -44,6 +44,14 @@ struct State
 
         blue_info   = static_cast<TeamInfo>(t_referee.blue());
         yellow_info = static_cast<TeamInfo>(t_referee.yellow());
+
+        const bool us_positive_half = config().common.our_color == TeamColor::Blue
+                                          ? t_referee.blue_team_on_positive_half()
+                                          : !t_referee.blue_team_on_positive_half();
+
+        our_side = us_positive_half ? TeamSide::Right : TeamSide::Left;
+
+        status_message = t_referee.status_message();
     }
 
     explicit State(const Protos::Immortals::Referee::State &t_state)
