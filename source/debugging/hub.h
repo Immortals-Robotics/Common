@@ -23,6 +23,9 @@ public:
         logger().flush();
 #endif
 
+        if (!config().common.enable_debug)
+            return;
+
         m_log_mutex.lock();
         m_draw_mutex.lock();
         m_execution_time_mutex.lock();
@@ -125,6 +128,9 @@ public:
 #if FEATURE_LOGGING
     void log(Log &&t_log)
     {
+        if (!config().common.enable_debug)
+            return;
+
         m_log_mutex.lock();
         m_wrapper.logs.emplace_back(t_log);
         m_log_mutex.unlock();
@@ -133,6 +139,9 @@ public:
 
     void draw(Draw &&t_draw)
     {
+        if (!config().common.enable_debug)
+            return;
+
         m_draw_mutex.lock();
         m_wrapper.draws.emplace_back(t_draw);
         m_draw_mutex.unlock();
@@ -140,6 +149,9 @@ public:
 
     void reportExecutionTime(const std::string_view t_name, const ExecutionTime &t_execution_time)
     {
+        if (!config().common.enable_debug)
+            return;
+
         m_execution_time_mutex.lock();
         m_wrapper.execution_times.emplace(t_name, t_execution_time);
         m_execution_time_mutex.unlock();
