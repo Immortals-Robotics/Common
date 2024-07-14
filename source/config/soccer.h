@@ -21,6 +21,8 @@ struct Soccer final : IConfig
         one_touch_gamma   = t_node["one_touch_gamma"].value_or(one_touch_gamma);
         one_touch_shoot_k = t_node["one_touch_shoot_k"].value_or(one_touch_shoot_k);
 
+        mark_in_stop = t_node["mark_in_stop"].value_or(mark_in_stop);
+
         if (auto *robot_physical_status_array = t_node["robot_physical_status"].as_array())
         {
             for (size_t i = 0; i < robot_physical_status_array->size(); i++)
