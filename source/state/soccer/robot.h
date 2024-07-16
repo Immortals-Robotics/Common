@@ -83,3 +83,48 @@ public:
     int mark_target = -1;
 };
 } // namespace Immortals::Common::Soccer
+
+#if FEATURE_LOGGING
+template <>
+struct fmt::formatter<Immortals::Common::Soccer::Role> : fmt::formatter<std::string>
+{
+    auto format(const Immortals::Common::Soccer::Role t_role, format_context &t_ctx) const
+    {
+        const char *type_str = "Unknown";
+        switch (t_role)
+        {
+        case Immortals::Common::Soccer::Role::Unknown:
+            type_str = "Unknown";
+            break;
+
+        case Immortals::Common::Soccer::Role::Gk:
+            type_str = "Gk";
+            break;
+        case Immortals::Common::Soccer::Role::Def:
+            type_str = "Def";
+            break;
+        case Immortals::Common::Soccer::Role::Dmf:
+            type_str = "Dmf";
+            break;
+        case Immortals::Common::Soccer::Role::Mid2:
+            type_str = "Mid2";
+            break;
+        case Immortals::Common::Soccer::Role::Mid1:
+            type_str = "Mid1";
+            break;
+        case Immortals::Common::Soccer::Role::Attack:
+            type_str = "Attack";
+            break;
+        case Immortals::Common::Soccer::Role::Rw:
+            type_str = "Rw";
+            break;
+        case Immortals::Common::Soccer::Role::Lw:
+            type_str = "Lw";
+            break;
+        }
+
+        return fmt::format_to(t_ctx.out(), "{}", type_str);
+    }
+};
+
+#endif
