@@ -133,6 +133,8 @@ bool Storage::open(std::string_view t_name)
     if (result != MDB_SUCCESS)
     {
         logCritical("lmdb transaction begin failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -143,6 +145,8 @@ bool Storage::open(std::string_view t_name)
     if (result != MDB_SUCCESS)
     {
         logCritical("lmdb db \"{}\" open failed with: {}", t_name, getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -151,6 +155,8 @@ bool Storage::open(std::string_view t_name)
     if (result != MDB_SUCCESS)
     {
         logCritical("lmdb transaction commit failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -186,6 +192,8 @@ bool Storage::get(Key t_key, google::protobuf::MessageLite *t_message) const
     if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb cursor open failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -193,15 +201,20 @@ bool Storage::get(Key t_key, google::protobuf::MessageLite *t_message) const
     if (result == MDB_NOTFOUND)
     {
         Common::logWarning("lmdb cursor get failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
     else if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb get failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
     bool pb_result = t_message->ParseFromArray(mdb_data.mv_data, mdb_data.mv_size);
+
     mdb_txn_abort(transaction);
 
     if (!pb_result)
@@ -237,6 +250,8 @@ bool Storage::closest(Key t_key, Key *t_closest) const
     if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb cursor open failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -244,11 +259,15 @@ bool Storage::closest(Key t_key, Key *t_closest) const
     if (result == MDB_NOTFOUND)
     {
         Common::logWarning("lmdb cursor get failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
     else if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb cursor get failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -276,6 +295,8 @@ bool Storage::next(Storage::Key t_key, Storage::Key *t_next) const
     if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb cursor open failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -289,11 +310,15 @@ bool Storage::next(Storage::Key t_key, Storage::Key *t_next) const
     if (result == MDB_NOTFOUND)
     {
         Common::logWarning("lmdb cursor get failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
     else if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb cursor get failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -301,11 +326,15 @@ bool Storage::next(Storage::Key t_key, Storage::Key *t_next) const
     if (result == MDB_NOTFOUND)
     {
         Common::logWarning("lmdb cursor get failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
     else if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb cursor get failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -325,7 +354,7 @@ unsigned long Storage::getBoundary(Key *t_first, Key *t_last) const
     if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb read/write transaction begin failed with: {}", getErrorString(result));
-        return false;
+        return 0;
     }
 
     MDB_val     mdb_key, mdb_data;
@@ -335,18 +364,23 @@ unsigned long Storage::getBoundary(Key *t_first, Key *t_last) const
     if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb cursor open failed with: {}", getErrorString(result));
-        return false;
+
+        mdb_txn_abort(transaction);
+        return 0;
     }
 
     result = mdb_cursor_get(mdb_cursor, &mdb_key, &mdb_data, MDB_FIRST);
     if (result == MDB_NOTFOUND)
     {
+        mdb_txn_abort(transaction);
         return 0;
     }
     else if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb get failed with: {}", getErrorString(result));
-        return false;
+
+        mdb_txn_abort(transaction);
+        return 0;
     }
 
     *t_first = *static_cast<Key *>(mdb_key.mv_data);
@@ -354,12 +388,15 @@ unsigned long Storage::getBoundary(Key *t_first, Key *t_last) const
     result = mdb_cursor_get(mdb_cursor, &mdb_key, &mdb_data, MDB_LAST);
     if (result == MDB_NOTFOUND)
     {
+        mdb_txn_abort(transaction);
         return 0;
     }
     else if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb get failed with: {}", getErrorString(result));
-        return false;
+
+        mdb_txn_abort(transaction);
+        return 0;
     }
     *t_last = *static_cast<Key *>(mdb_key.mv_data);
 
@@ -369,6 +406,8 @@ unsigned long Storage::getBoundary(Key *t_first, Key *t_last) const
     {
         mdb_txn_abort(transaction);
         Common::logError("Could not get stats: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return 0;
     }
 
@@ -376,6 +415,8 @@ unsigned long Storage::getBoundary(Key *t_first, Key *t_last) const
     if (result != MDB_SUCCESS)
     {
         Common::logError("lmdb transaction commit failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -410,6 +451,8 @@ bool Storage::store(Key t_key, const google::protobuf::MessageLite &t_message)
     if (result != MDB_SUCCESS)
     {
         logError("lmdb dry put for key [{}] with size {} failed with: {}", t_key, message_size, getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -417,6 +460,8 @@ bool Storage::store(Key t_key, const google::protobuf::MessageLite &t_message)
     if (!pb_result)
     {
         logError("Failed to serialize protobuf message for db storage");
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -424,6 +469,8 @@ bool Storage::store(Key t_key, const google::protobuf::MessageLite &t_message)
     if (result != MDB_SUCCESS)
     {
         logError("lmdb put for key [{}] with size {} failed with: {}", t_key, mdb_data.mv_size, getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -431,6 +478,8 @@ bool Storage::store(Key t_key, const google::protobuf::MessageLite &t_message)
     if (result != MDB_SUCCESS)
     {
         logError("lmdb transaction commit failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -461,6 +510,8 @@ bool Storage::storeRaw(Key t_key, std::span<char> t_data)
     if (result != MDB_SUCCESS)
     {
         logError("lmdb put for key [{}] with size {} failed with: {}", t_key, mdb_data.mv_size, getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
@@ -468,6 +519,8 @@ bool Storage::storeRaw(Key t_key, std::span<char> t_data)
     if (result != MDB_SUCCESS)
     {
         logError("lmdb transaction commit failed with: {}", getErrorString(result));
+
+        mdb_txn_abort(transaction);
         return false;
     }
 
