@@ -144,6 +144,8 @@ set(HEADER_FILES
         source/state/referee/match.h
         source/state/referee/state.h
         source/state/referee/team_info.h
+        source/state/soccer/robot.h
+        source/state/soccer/state.h
         source/state/world/ball.h
         source/state/world/robot.h
         source/state/world/seen_state.h

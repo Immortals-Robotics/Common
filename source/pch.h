@@ -96,6 +96,7 @@
 #include <protos/immortals/debug.pb.h>
 #include <protos/immortals/referee_state.pb.h>
 #include <protos/immortals/world_state.pb.h>
+#include <protos/immortals/soccer_state.pb.h>
 
 #include "time/duration.h"
 #include "time/time_point.h"
@@ -184,6 +185,9 @@
 #include "state/world/world.h"
 
 #include "state/referee/state.h"
+
+#include "state/soccer/robot.h"
+#include "state/soccer/state.h"
 
 #if FEATURE_STORAGE
 #if FEATURE_NNG

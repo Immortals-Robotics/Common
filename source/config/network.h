@@ -47,6 +47,7 @@ struct Network final : IConfig
     std::string world_state_url     = "inproc://world_state";
     std::string debug_url           = "inproc://debug";
     std::string referee_state_url   = "inproc://referee_state";
+    std::string soccer_state_url    = "inproc://soccer_state";
     std::string commands_url        = "inproc://commands";
 
     // DB names
