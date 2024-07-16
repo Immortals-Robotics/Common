@@ -55,5 +55,6 @@ struct Network final : IConfig
     std::string world_state_db     = "world_state";
     std::string debug_db           = "debug";
     std::string referee_db         = "referee";
+    std::string soccer_db          = "soccer";
 };
 } // namespace Immortals::Common::Config
