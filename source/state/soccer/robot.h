@@ -127,4 +127,30 @@ struct fmt::formatter<Immortals::Common::Soccer::Role> : fmt::formatter<std::str
     }
 };
 
+template <>
+struct fmt::formatter<Immortals::Common::Soccer::OneTouchType> : fmt::formatter<std::string>
+{
+    auto format(const Immortals::Common::Soccer::OneTouchType t_type, format_context &t_ctx) const
+    {
+        const char *type_str = "Unknown";
+        switch (t_type)
+        {
+        case Immortals::Common::Soccer::OneTouchType::OneTouch:
+            type_str = "One Touch";
+            break;
+        case Immortals::Common::Soccer::OneTouchType::Shirje:
+            type_str = "Shirje";
+            break;
+        case Immortals::Common::Soccer::OneTouchType::Gool:
+            type_str = "Gool";
+            break;
+        case Immortals::Common::Soccer::OneTouchType::Allaf:
+            type_str = "Allaf";
+            break;
+        }
+
+        return fmt::format_to(t_ctx.out(), "{}", type_str);
+    }
+};
+
 #endif

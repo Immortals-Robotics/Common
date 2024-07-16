@@ -55,8 +55,8 @@ public:
 
     Robot robots[Config::Common::kMaxRobots];
 
-    float random_param = 0.0f;
-    int   target_str   = -1;
+    float       random_param = 0.0f;
+    std::string target_str;
 
     bool is_defending  = false;
     bool opp_restarted = false;
