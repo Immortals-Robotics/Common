@@ -44,6 +44,27 @@ struct Rect
                (max.y + t_offset) >= t_point.y;
     }
 
+    std::vector<Vec2> intersection(const Line &t_line) const
+    {
+        int  n_sol = 0;
+        std::vector<Vec2> sols;
+
+        std::vector<LineSegment> segments;
+        segments.push_back({min, Vec2(min.x, max.y)});
+        segments.push_back({min, Vec2(max.x, min.y)});
+        segments.push_back({max, Vec2(min.x, max.y)});
+        segments.push_back({max, Vec2(max.x, min.y)});
+
+        for (const auto &segment : segments)
+        {
+            auto intersect = t_line.intersect(segment);
+            if(intersect.has_value()) {
+                sols.push_back(intersect.value());
+            }
+        }
+
+        return sols;
+    }
     Vec2 nearestOutside(const Vec2 t_point) const
     {
         constexpr float kExtension = 5.0f;
