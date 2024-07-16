@@ -36,6 +36,9 @@ public:
 
         for (const auto &robot : robots)
         {
+            if(robot.role == Role::Unknown)
+                continue;
+
             robot.fillProto(t_state->add_robots());
         }
 
