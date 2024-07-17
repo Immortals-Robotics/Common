@@ -5,14 +5,17 @@ namespace Immortals::Common::Soccer
 enum class Role
 {
     Unknown = 0,
-    Gk      = 1,
-    Def     = 2,
-    Dmf     = 3,
-    Mid2    = 4,
-    Mid1    = 5,
-    Attack  = 6,
-    Rw      = 7,
-    Lw      = 8,
+    Gk,
+    Def1,
+    Def2,
+    Mid1,
+    Mid2,
+    Mid3,
+    Mid4,
+    Mid5,
+    Mid6,
+    Mid7,
+    Attack,
 };
 
 enum class OneTouchType
@@ -100,26 +103,36 @@ struct fmt::formatter<Immortals::Common::Soccer::Role> : fmt::formatter<std::str
         case Immortals::Common::Soccer::Role::Gk:
             type_str = "Gk";
             break;
-        case Immortals::Common::Soccer::Role::Def:
-            type_str = "Def";
+        case Immortals::Common::Soccer::Role::Def1:
+            type_str = "Def1";
             break;
-        case Immortals::Common::Soccer::Role::Dmf:
-            type_str = "Dmf";
-            break;
-        case Immortals::Common::Soccer::Role::Mid2:
-            type_str = "Mid2";
+        case Immortals::Common::Soccer::Role::Def2:
+            type_str = "Def2";
             break;
         case Immortals::Common::Soccer::Role::Mid1:
             type_str = "Mid1";
             break;
+        case Immortals::Common::Soccer::Role::Mid2:
+            type_str = "Mid2";
+            break;
+        case Immortals::Common::Soccer::Role::Mid3:
+            type_str = "Mid3";
+            break;
+        case Immortals::Common::Soccer::Role::Mid4:
+            type_str = "Mid4";
+            break;
+        case Immortals::Common::Soccer::Role::Mid5:
+            type_str = "Mid5";
+            break;
+        case Immortals::Common::Soccer::Role::Mid6:
+            type_str = "Mid6";
+            break;
+        case Immortals::Common::Soccer::Role::Mid7:
+            type_str = "Mid7";
+            break;
+
         case Immortals::Common::Soccer::Role::Attack:
             type_str = "Attack";
-            break;
-        case Immortals::Common::Soccer::Role::Rw:
-            type_str = "Rw";
-            break;
-        case Immortals::Common::Soccer::Role::Lw:
-            type_str = "Lw";
             break;
         }
 
