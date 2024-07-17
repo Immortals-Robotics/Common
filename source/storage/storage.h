@@ -31,7 +31,7 @@ protected:
 
 private:
     static constexpr size_t kMaxDbCount = 10;
-    static constexpr size_t kMapSize    = 4llu * 1024llu * 1024llu * 1024llu; // 1 GB
+    static constexpr size_t kMapSize    = 100llu * 1024llu * 1024llu * 1024llu; // 1 GB
 
     inline static MDB_env *s_env = nullptr;
 
