@@ -21,6 +21,10 @@ struct Soccer final : IConfig
         one_touch_gamma   = t_node["one_touch_gamma"].value_or(one_touch_gamma);
         one_touch_shoot_k = t_node["one_touch_shoot_k"].value_or(one_touch_shoot_k);
 
+        gk_tight_start_angle  = t_node["gk_tight_start_angle"].value_or(gk_tight_start_angle);
+        def_tight_start_angle = t_node["def_tight_start_angle"].value_or(def_tight_start_angle);
+        def_prediction_time   = t_node["def_prediction_time"].value_or(def_prediction_time);
+
         mark_in_stop = t_node["mark_in_stop"].value_or(mark_in_stop);
 
         if (auto *robot_physical_status_array = t_node["robot_physical_status"].as_array())
@@ -54,9 +58,12 @@ struct Soccer final : IConfig
 
     RobotPhysicalStatus robot_physical_status[Common::kMaxRobots];
 
-    float one_touch_beta    = 0.4f;  // Damping factor
-    float one_touch_gamma   = 0.14f; // Reflect factor
-    float one_touch_shoot_k = 4000.0f;
+    float one_touch_beta        = 0.4f;  // Damping factor
+    float one_touch_gamma       = 0.14f; // Reflect factor
+    float one_touch_shoot_k     = 4000.0f;
+    float gk_tight_start_angle  = 20.0;
+    float def_tight_start_angle = 40.0;
+    float def_prediction_time   = 0.5;
 
     bool mark_in_stop = false;
 };
