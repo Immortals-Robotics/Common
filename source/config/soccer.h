@@ -24,6 +24,8 @@ struct Soccer final : IConfig
         gk_tight_start_angle  = t_node["gk_tight_start_angle"].value_or(gk_tight_start_angle);
         def_tight_start_angle = t_node["def_tight_start_angle"].value_or(def_tight_start_angle);
         def_prediction_time   = t_node["def_prediction_time"].value_or(def_prediction_time);
+        def_max_extension_area   = t_node["def_max_extension_area"].value_or(def_max_extension_area);
+        def_ball_distance_coef   = t_node["def_ball_distance_coef"].value_or(def_ball_distance_coef);
 
         mark_in_stop = t_node["mark_in_stop"].value_or(mark_in_stop);
 
@@ -61,10 +63,11 @@ struct Soccer final : IConfig
     float one_touch_beta        = 0.4f;  // Damping factor
     float one_touch_gamma       = 0.14f; // Reflect factor
     float one_touch_shoot_k     = 4000.0f;
-    float gk_tight_start_angle  = 20.0;
-    float def_tight_start_angle = 40.0;
-    float def_prediction_time   = 0.5;
-
+    float gk_tight_start_angle  = 20.0f;
+    float def_tight_start_angle = 40.0f;
+    float def_prediction_time   = 0.5f;
+    float def_max_extension_area = 1100.0f;
+    float def_ball_distance_coef = 0.7f;
     bool mark_in_stop = false;
 };
 } // namespace Immortals::Common::Config
