@@ -178,5 +178,14 @@ struct Color
     {
         return {1.0f, 0.0f, 1.0f, 1.0f};
     }
+
+    static Color lerp(const Color &t_c1, const Color &t_c2, const float t_amount)
+    {
+        const float clamped_amount = std::clamp(t_amount, 0.0f, 1.0f);
+        return {t_c1.r * (1.0f - clamped_amount) + t_c2.r * clamped_amount,
+                t_c1.g * (1.0f - clamped_amount) + t_c2.g * clamped_amount,
+                t_c1.b * (1.0f - clamped_amount) + t_c2.b * clamped_amount,
+                t_c1.a * (1.0f - clamped_amount) + t_c2.a * clamped_amount};
+    }
 };
 } // namespace Immortals::Common
