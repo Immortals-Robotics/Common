@@ -44,6 +44,11 @@ struct Rect
                (max.y + t_offset) >= t_point.y;
     }
 
+    bool intersects(const Rect &t_rect) const
+    {
+        return (min.x <= t_rect.max.x && max.x >= t_rect.min.x && min.y <= t_rect.max.y && max.y >= t_rect.min.y);
+    }
+
     std::vector<Vec2> intersection(const Line &t_line) const
     {
         int  n_sol = 0;
@@ -65,6 +70,7 @@ struct Rect
 
         return sols;
     }
+
     Vec2 nearestOutside(const Vec2 t_point) const
     {
         constexpr float kExtension = 5.0f;
@@ -113,6 +119,11 @@ struct Rect
     float height() const
     {
         return max.y - min.y;
+    }
+
+    Vec2 center() const
+    {
+        return (min + max) / 2.0f;
     }
 
     Vec2 min;
