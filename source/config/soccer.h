@@ -60,7 +60,7 @@ struct Soccer final : IConfig
         def_ball_distance_coef = t_node["def_ball_distance_coef"].value_or(def_ball_distance_coef);
 
         kick_tune_coef   = t_node["kick_tune_coef"].value_or(kick_tune_coef);
-        chip_tune_coef   = t_node["def_ball_distance_coef"].value_or(chip_tune_coef);
+        chip_tune_coef   = t_node["chip_tune_coef"].value_or(chip_tune_coef);
 
         mark_in_stop = t_node["mark_in_stop"].value_or(mark_in_stop);
         mark_distance = t_node["mark_distance"].value_or(mark_distance);
@@ -113,7 +113,7 @@ struct Soccer final : IConfig
     float def_max_extension_area = 1100.0f;
     float def_ball_distance_coef = 0.7f;
     float kick_tune_coef = 1.f;
-    float chip_tune_coef = 2.5f;
+    float chip_tune_coef = 1.f;
     bool mark_in_stop = false;
     float mark_distance = 500.0f;
 };
