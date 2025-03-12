@@ -36,6 +36,7 @@ struct Vision final : IConfig
         chip_min_records = t_node["chip_min_records"].value_or(chip_min_records);
         chip_max_records = t_node["chip_max_records"].value_or(chip_max_records);
         chip_max_vel_z   = t_node["chip_max_vel_z"].value_or(chip_max_vel_z);
+        kicker_depth     = t_node["kicker_depth"].value_or(kicker_depth);
     }
 #endif
 
@@ -62,5 +63,6 @@ struct Vision final : IConfig
     int   chip_min_records    = 3;
     int   chip_max_records    = 200;
     float chip_max_vel_z      = 7000.;
+    float kicker_depth        = 150.0;
 };
 } // namespace Immortals::Common::Config

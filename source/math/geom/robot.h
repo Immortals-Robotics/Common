@@ -25,12 +25,12 @@ struct Robot
         return dis < frontDis() || (dis <= radius && rel.toAngle().isBetween(start_angle, end_angle));
     }
 
-    bool canKick(const Vec2 t_point) const
+    bool canKick(const Vec2 t_point, const float t_kicker_depth = kKickerDepth) const
     {
         const Vec2 p1 = center + (angle + kHalfArcAngle).toUnitVec() * radius;
         const Vec2 p2 = center + (angle - kHalfArcAngle).toUnitVec() * radius;
-        const Vec2 p3 = center + (angle - kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * kKickerDepth;
-        const Vec2 p4 = center + (angle + kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * kKickerDepth;
+        const Vec2 p3 = center + (angle - kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * t_kicker_depth;
+        const Vec2 p4 = center + (angle + kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * t_kicker_depth;
 
         const Vec2 v1 = t_point - p1;
         const Vec2 v2 = t_point - p2;
