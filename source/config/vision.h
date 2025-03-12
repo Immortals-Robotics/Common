@@ -37,6 +37,7 @@ struct Vision final : IConfig
         chip_max_records = t_node["chip_max_records"].value_or(chip_max_records);
         chip_max_vel_z   = t_node["chip_max_vel_z"].value_or(chip_max_vel_z);
         kicker_depth     = t_node["kicker_depth"].value_or(kicker_depth);
+        use_ball_3d      = t_node["use_ball_3d"].value_or(use_ball_3d);
     }
 #endif
 
@@ -64,5 +65,6 @@ struct Vision final : IConfig
     int   chip_max_records    = 200;
     float chip_max_vel_z      = 7000.;
     float kicker_depth        = 150.0;
+    bool  use_ball_3d         = true;
 };
 } // namespace Immortals::Common::Config
