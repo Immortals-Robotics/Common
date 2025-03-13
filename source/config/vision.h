@@ -18,6 +18,7 @@ struct Vision final : IConfig
         }
 
         vision_frame_rate = t_node["vision_frame_rate"].value_or(vision_frame_rate);
+        predict_time = t_node["predict_time"].value_or(predict_time);
 
         max_ball_hist = t_node["max_ball_hist"].value_or(max_ball_hist);
 
@@ -43,6 +44,7 @@ struct Vision final : IConfig
     static constexpr unsigned kMaxBalls = 10;
 
     float vision_frame_rate = 60.0f;
+    float predict_time = 0.12f;
 
     std::array<bool, kCamCount> use_camera = {};
 
