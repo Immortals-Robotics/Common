@@ -27,10 +27,11 @@ struct Robot
 
     bool canKick(const Vec2 t_point, const float t_kicker_depth = kKickerDepth) const
     {
-        const Vec2 p1 = center + (angle + kHalfArcAngle).toUnitVec() * radius;
-        const Vec2 p2 = center + (angle - kHalfArcAngle).toUnitVec() * radius;
+        const Vec2 p1 = center + (angle + kHalfArcAngle).toUnitVec() * radius - angle.toUnitVec() * t_kicker_depth * 0.5f;
+        const Vec2 p2 = center + (angle - kHalfArcAngle).toUnitVec() * radius - angle.toUnitVec() * t_kicker_depth * 0.5f;
         const Vec2 p3 = center + (angle - kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * t_kicker_depth;
         const Vec2 p4 = center + (angle + kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * t_kicker_depth;
+
 
         const Vec2 v1 = t_point - p1;
         const Vec2 v2 = t_point - p2;
@@ -44,6 +45,14 @@ struct Robot
 
         return signInt(cross1) == signInt(cross2) && signInt(cross2) == signInt(cross3) &&
                signInt(cross3) == signInt(cross4);
+    }
+
+    void getFrontPoints(Vec2 &t_p1, Vec2 &t_p2, Vec2 &t_p3, Vec2 &t_p4, const float t_kicker_depth = kKickerDepth) const
+    {
+        t_p1 = center + (angle + kHalfArcAngle).toUnitVec() * radius - angle.toUnitVec() * t_kicker_depth * 0.5f;
+        t_p2 = center + (angle - kHalfArcAngle).toUnitVec() * radius -angle.toUnitVec() * t_kicker_depth * 0.5f;
+        t_p3 = center + (angle - kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * t_kicker_depth;
+        t_p4 = center + (angle + kHalfArcAngle).toUnitVec() * radius + angle.toUnitVec() * t_kicker_depth;
     }
 
     LineSegment getFrontLine() const
