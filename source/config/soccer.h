@@ -34,13 +34,11 @@ struct VelocityProfile final : IConfig
     void load(const toml::node_view<const toml::node> t_node) override
     {
         speed        = t_node["speed"].value_or(speed);
-        deceleration = t_node["deceleration"].value_or(deceleration);
         acceleration = t_node["acceleration"].value_or(acceleration);
     }
 #endif
 
     float speed        = 0.0f;
-    float deceleration = 0.0f;
     float acceleration = 0.0f;
 };
 
