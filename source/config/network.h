@@ -10,10 +10,15 @@ struct Network final : IConfig
 #if FEATURE_CONFIG_FILE
     void load(const toml::node_view<const toml::node> t_node) override
     {
-        vision_address.load(t_node["vision"]);
+
+        use_simulated_vision = t_node["active"]["use_simulated_vision"].value_or(use_simulated_vision);
+        use_internal_referee = t_node["active"]["use_internal_referee"].value_or(use_internal_referee);
+
+        use_simulated_vision ? vision_address.load(t_node["vision_sim"]) :  vision_address.load(t_node["vision"]);
+        
         tracker_address.load(t_node["tracker"]);
 
-        referee_address.load(t_node["referee"]);
+        use_internal_referee ? referee_address.load(t_node["internal_referee"]) : referee_address.load(t_node["referee"]);
 
         strategy_address.load(t_node["strategy"]);
 
@@ -42,6 +47,9 @@ struct Network final : IConfig
     NetworkAddress blue_robot_simulation_address   = {"127.0.0.1", 10301};
     NetworkAddress yellow_robot_simulation_address = {"127.0.0.1", 10302};
 
+    bool use_simulated_vision = false;
+    bool use_internal_referee = false;
+    
     // NNG urls
     std::string raw_world_state_url = "inproc://raw_world_state";
     std::string world_state_url     = "inproc://world_state";
