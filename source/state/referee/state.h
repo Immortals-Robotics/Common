@@ -221,7 +221,7 @@ struct State
 
     bool shouldSlowDown() const
     {
-        return stop();
+        return stop() || ballPlacement() || canEnterField();
     }
 
     bool canEnterField() const
