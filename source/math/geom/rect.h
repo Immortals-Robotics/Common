@@ -35,22 +35,19 @@ struct Rect
 
     bool inside(const Vec2 t_point, const float margin = 0.f) const
     {
-        return distance(t_point) < margin;
+        return distance(t_point) <= margin;
     }
 
     float distance(const Vec2 t_point) const
     {
         // Inside distance (negative if inside)
-        const float d_inside = std::min({
-            t_point.x - min.x,
-            max.x - t_point.x,
-            t_point.y - min.y,
-            max.y - t_point.y});
+        const float d = std::max({
+            min.x - t_point.x,
+            t_point.x - max.x,
+            min.y - t_point.y,
+            t_point.y - max.y});
 
-        // Outside distance (Euclidean distance to nearest edge if outside)
-        const Vec2 d_outside = Vec2::max(min - t_point, {}) + Vec2::max(t_point - max, {});
-
-        return std::max(d_inside, d_outside.length());
+        return d;
     }
 
     bool intersects(const Rect &t_rect) const
