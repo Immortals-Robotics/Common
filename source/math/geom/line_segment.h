@@ -17,6 +17,43 @@ struct LineSegment
         end.fillProto(t_line->mutable_end());
     }
 
+    double length() const
+    {
+        return (end - start).length();
+    }
+
+    double distanceTo(const Vec2 &t_point) const
+    {
+        double t = (t_point - start).dot(end - start) / (end - start).dot(end - start);
+
+        if (t < 0)
+        {
+            return (t_point - start).length();
+        }
+        else if (t > 1)
+        {
+            return (t_point - end).length();
+        }
+        else
+        {
+            return (t_point - (start + (end - start) * t)).length();
+        }
+    }
+
+    Vec2 closestPoint(const Vec2 &t_point) const
+    {
+        double t = (t_point - start).dot(end - start) / (end - start).dot(end - start);
+        if (t < 0) {
+            return start;
+        }
+        else if (t > 1) {
+            return end;
+        }
+        else {
+            return start + (end - start) * t;
+        }
+    }
+
     Vec2 start;
     Vec2 end;
 };
