@@ -63,6 +63,9 @@ struct Soccer final : IConfig
         mark_in_stop = t_node["mark_in_stop"].value_or(mark_in_stop);
         mark_distance = t_node["mark_distance"].value_or(mark_distance);
 
+        penalty_area_mark = t_node["penalty_area_mark"].value_or(penalty_area_mark);
+        penalty_area_mark_distance = t_node["penalty_area_mark_distance"].value_or(penalty_area_mark_distance);
+
         if (auto *robot_physical_status_array = t_node["robot_physical_status"].as_array())
         {
             for (size_t i = 0; i < robot_physical_status_array->size(); i++)
@@ -114,5 +117,7 @@ struct Soccer final : IConfig
     float chip_tune_coef = 1.f;
     bool mark_in_stop = false;
     float mark_distance = 500.0f;
+    bool penalty_area_mark = false;
+    float penalty_area_mark_distance = 120.0f;
 };
 } // namespace Immortals::Common::Config
