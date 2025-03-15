@@ -33,15 +33,24 @@ struct Rect
         max.fillProto(t_rect->mutable_max());
     }
 
-    bool inside(const Vec2 t_point) const
+    bool inside(const Vec2 t_point, const float margin = 0.f) const
     {
-        return min.x <= t_point.x && max.x >= t_point.x && min.y <= t_point.y && max.y >= t_point.y;
+        return distance(t_point) < margin;
     }
 
-    bool insideOffset(const Vec2 t_point, const float t_offset) const
+    float distance(const Vec2 t_point) const
     {
-        return (min.x - t_offset) <= t_point.x && (max.x + t_offset) >= t_point.x && (min.y - t_offset) <= t_point.y &&
-               (max.y + t_offset) >= t_point.y;
+        // Inside distance (negative if inside)
+        const float d_inside = std::min({
+            t_point.x - min.x,
+            max.x - t_point.x,
+            t_point.y - min.y,
+            max.y - t_point.y});
+
+        // Outside distance (Euclidean distance to nearest edge if outside)
+        const Vec2 d_outside = Vec2::max(min - t_point, {}) + Vec2::max(t_point - max, {});
+
+        return std::max(d_inside, d_outside.length());
     }
 
     bool intersects(const Rect &t_rect) const

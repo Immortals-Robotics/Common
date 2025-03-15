@@ -26,14 +26,14 @@ struct Circle
         return std::numbers::pi * r * r;
     }
 
-    bool inside(const Vec2 t_point) const
+    bool inside(const Vec2 t_point, const float margin = 0.f) const
     {
-        return (center - t_point).length() < r;
+        return distance(t_point) < margin;
     }
 
-    bool insideOffset(const Vec2 t_point, const float t_offset) const
+    float distance(const Vec2 t_point) const
     {
-        return (center - t_point).length() < (r + t_offset);
+        return (center - t_point).length() - r;
     }
 
     Vec2 nearestOutside(const Vec2 t_point, const float t_extra_r = 0.0) const
